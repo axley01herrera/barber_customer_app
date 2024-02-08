@@ -1,0 +1,59 @@
+<ion-content>
+  <div class="auth-container">
+    <!-- Modal -->
+    <ion-modal [isOpen]="isOpenModal">
+      <ng-template>
+        <div class="auth-container">
+          <div class="row">
+            <div class="col-6 text-center">
+              <input type="radio" name="lang" id="radio-es" class="me-2" [checked]="lang === 'es'"
+                (click)="setLang('es')" /> <label for="radio-es"><img id="header-lang-img" src="assets/img/spain.jpg"
+                  alt="spanish" height="35"></label>
+            </div>
+            <div class="col-6 mb-5 text-center">
+              <input type="radio" name="lang" id="radio-en" class="me-2" [checked]="lang === 'en'"
+                (click)="setLang('en')" /> <label for="radio-en"><img id="header-lang-img" src="assets/img/us.jpg"
+                  alt="spanish" height="35"></label>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ion-modal>
+    <!-- End Modal -->
+
+    <!-- Main -->
+    <div class="alert ms-1 me-1">
+
+      <button type="button" class="btn header-item float-end" (click)="openModalLang()">
+        <div *ngIf="lang == 'es';">
+          <img id="header-lang-img" src="assets/img/spain.jpg" alt="spanish" height="16">
+        </div>
+        <div *ngIf="lang == 'en';">
+          <img id="header-lang-img" src="assets/img/us.jpg" alt="spanish" height="16">
+        </div>
+      </button>
+
+      <h1 class="alert-heading text-white">{{ 'intro.welcome' | translate }}</h1>
+      <p class="text-white">{{ 'intro.msg1' | translate }}</p>
+      <hr>
+      <p class="mb-3 text-white">{{ 'intro.msg2' | translate }}</p>
+
+      <div class="mb-3">
+        <input id="txt-url" type="text" class="form-control required" placeholder="url" [(ngModel)]="url" (focus)="onFocusTxtUrl()"/>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-primary" (click)="next()">
+          {{ 'intro.btn_next' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- QR -->
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button (click)="scan()" [disabled]="!isSupported">
+        <ion-icon name="scan"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>

@@ -1,20 +1,65 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="auth-container">
+    <!-- Modal -->
+    <ion-modal [isOpen]="isOpenSelLang">
+      <ng-template>
+        <div class="container mt-5">
+          <div class="row">
+            <div class="col-6 text-center">
+              <input type="radio" name="lang" id="radio-es" class="me-2" [checked]="appLang === 'es'"
+                (click)="setLang('es')" /> <label for="radio-es"><img id="header-lang-img" src="assets/img/spain.jpg"
+                  alt="spanish" height="16"></label>
+            </div>
+            <div class="col-6 mb-5 text-center">
+              <input type="radio" name="lang" id="radio-en" class="me-2" [checked]="appLang === 'en'"
+                (click)="setLang('en')" /> <label for="radio-en"><img id="header-lang-img" src="assets/img/us.jpg"
+                  alt="spanish" height="16"></label>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ion-modal>
+    <!-- End Modal -->
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <div class="row">
+      <div class="col-12 text-center mb-3">
+        <img src="assets/img/logo.png" alt="logo" width="100px">
+      </div>
+    </div>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2 class="text-dark">{{ 'sign_in' | translate }}</h2>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <!-- Email -->
+      <input type="text" class="form-control required" placeholder="{{ 'email' | translate }}" />
+    </div>
+    <div class="mb-4">
+      <!-- Key -->
+      <input type="password" class="form-control required" placeholder="{{ 'pass' | translate }}" />
+    </div>
+
+    <div class="mb-5 text-center">
+      <!-- Login -->
+      <button class="btn btn-primary">Login</button>
+    </div>
+
+    <div class="row">
+      <div class="col-12 text-end">
+        <div class="dropdown d-inline-block language-switch">
+          <button type="button" class="btn header-item" (click)="openSelLang()">
+            <div *ngIf="appLang == 'es';">
+              <img id="header-lang-img" src="assets/img/spain.jpg" alt="spanish" height="16">
+            </div>
+            <div *ngIf="appLang == 'en';">
+              <img id="header-lang-img" src="assets/img/us.jpg" alt="spanish" height="16">
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </ion-content>
