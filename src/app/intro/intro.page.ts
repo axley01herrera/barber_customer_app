@@ -14,13 +14,13 @@ import { MainServiceService } from '../service/main-service.service';
   styleUrls: ['./intro.page.scss'],
 })
 export class IntroPage implements OnInit {
+
   platform: string = "";
   isSupported: boolean = false;
   barcodes: Barcode[] = [];
   lang: string = "es";
   url: string = "";
   isOpenModal: boolean = false;
-  apiUrl: string = "";
 
   constructor(
     private http: HttpClient,
@@ -49,16 +49,14 @@ export class IntroPage implements OnInit {
           this.storage.set('appLang', this.lang);
         })
       } else
-      this.lang = storageLang;
+        this.lang = storageLang;
 
       this.translate.use(this.lang);
     });
 
-    this.mainService.getStorageApiUrl().then((storageApiUrl: any) => {
-      if (storageApiUrl != null) {
-        this.apiUrl = storageApiUrl;
+    this.mainService.getStorageEnviromentApiUrl().then((url: any) => {
+      if (url != null)
         this.router.navigate(["authentication"]);
-      }
     });
   }
 
@@ -86,6 +84,7 @@ export class IntroPage implements OnInit {
     let introRequiredFields: String = "";
     let introOk: String = "";
     let introInvalidURL: String = "";
+    let not_network_msg: String = "";
 
     await this.translate.get('intro.atention').subscribe((res: string) => {
       introAtention = res;
@@ -99,6 +98,9 @@ export class IntroPage implements OnInit {
     await this.translate.get('intro.invalid_url').subscribe((res: any) => {
       introInvalidURL = res;
     });
+    await this.translate.get('global.not_network_msg').subscribe((res: any) => {
+      not_network_msg = res;
+    });
 
     if (this.url == "") {
       txtUrl?.classList.add('is-invalid');
@@ -111,24 +113,32 @@ export class IntroPage implements OnInit {
     } else {
       const validateURL = await this.validateURL(this.url); console.log(validateURL);
       if (validateURL) {
-        const enviroment = await this.getApiUrl(this.url);
-        const apiUrl = enviroment + ".barberhi/Api/index"; console.log(apiUrl);
-
-        await this.http.post(apiUrl, '').subscribe((res: any) => {
-          if (res.error == 0) {
-            this.apiUrl = apiUrl;
-            this.storage.set('apiUrl', this.apiUrl).then((res: any) => {
-              this.router.navigate(["authentication"]);
-            })
-          } else {
+        const enviroment = await this.getEnviromentApiUrl(this.url);
+        const apiUrl = enviroment + ".barberhi/Api/index";
+        const networkStatus = await this.mainService.getNetworkStatus(); console.log('networkStatus', networkStatus);
+        if(networkStatus) {
+          await this.http.post(apiUrl, '').subscribe((res: any) => {
+            if (res.error == 0) {
+              this.storage.set('enviromentApiUrl', enviroment).then((res: any) => {
+                this.router.navigate(["authentication"]);
+              })
+            } else { // Error Not Found Enviroment
+              txtUrl?.classList.add('is-invalid');
+              this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
+            }
+          }, (error) => { // Error Not Found Enviroment
             txtUrl?.classList.add('is-invalid');
             this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
-          }
-        }, (error) => {
-          txtUrl?.classList.add('is-invalid');
-          this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
-        });
-      } else {
+          });
+        } else { // Error network
+          const alert = await this.alertController.create({
+            header: String(introAtention),
+            message: String(not_network_msg),
+            buttons: [String(introOk)],
+          });
+          await alert.present();
+        }
+      } else { // Error Invalid Url
         txtUrl?.classList.add('is-invalid');
         const alert = await this.alertController.create({
           header: String(introAtention),
@@ -169,7 +179,7 @@ export class IntroPage implements OnInit {
     return urlRegex.test(url);
   }
 
-  async getApiUrl(url: string) {
+  async getEnviromentApiUrl(url: string) {
     const indexPunto = url.indexOf('.');
 
     if (indexPunto === -1) {

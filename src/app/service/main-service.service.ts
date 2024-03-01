@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Device } from '@capacitor/device';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { Storage } from '@ionic/storage-angular';
+import { Network } from '@capacitor/network';
 
 @Injectable({
   providedIn: 'root'
@@ -42,11 +43,17 @@ export class MainServiceService {
     return lang;
   }
 
-  async getStorageApiUrl() {
-    const lang = this.storage.get('apiUrl').then((res: any) => {
+  async getStorageEnviromentApiUrl() {
+    const lang = this.storage.get('enviromentApiUrl').then((res: any) => {
       return res;
     });
 
     return lang;
+  }
+
+  /* Network */
+  async getNetworkStatus() {
+    const status = await Network.getStatus();
+    return status.connected;
   }
 }

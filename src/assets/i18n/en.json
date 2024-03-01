@@ -1,4 +1,10 @@
 {
+  "global": {
+    "email": "Email",
+    "pass": "Password",
+    "btn_login": "Login",
+    "not_network_msg": "You do not have an internet connection"
+  },
   "intro": {
     "welcome": "Welcome",
     "msg1": "We're delighted to have you here. To get started, since it's your first time accessing through the application, we need you to scan the QR code of your usual barbershop or enter the corresponding URL address.",
@@ -8,5 +14,8 @@
     "required_fields": "Required Fields",
     "ok": "Ok",
     "invalid_url": "Invalid URL"
+  },
+  "auth": {
+    "signin": "Sign In"
   }
 }

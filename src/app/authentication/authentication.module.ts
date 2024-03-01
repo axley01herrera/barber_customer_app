@@ -8,12 +8,15 @@ import { AuthenticationPageRoutingModule } from './authentication-routing.module
 
 import { AuthenticationPage } from './authentication.page';
 
+import { TranslateModule } from '@ngx-translate/core';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AuthenticationPageRoutingModule
+    AuthenticationPageRoutingModule,
+    TranslateModule
   ],
   declarations: [AuthenticationPage]
 })

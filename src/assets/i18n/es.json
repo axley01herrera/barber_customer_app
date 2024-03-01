@@ -1,4 +1,10 @@
 {
+  "global": {
+    "email": "Email",
+    "pass": "Contraseña",
+    "btn_login": "Entrar",
+    "not_network_msg": "No tienes conexion a internet"
+  },
   "intro": {
     "welcome": "Bienvenido",
     "msg1": "Nos complace tenerte aquí. Para comenzar, como es tu primera vez accediendo a través de la aplicación, necesitamos que escanees el código QR de tu barbería habitual o ingreses la dirección URL correspondiente.",
@@ -8,6 +14,9 @@
     "required_fields": "Campos Requeridos",
     "ok": "Entendido",
     "invalid_url": "Rectifique su URL"
+  },
+  "auth": {
+    "signin": "Inicio de Sesión"
   }
 
 }
