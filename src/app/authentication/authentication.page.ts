@@ -17,7 +17,6 @@ export class AuthenticationPage implements OnInit {
   platform: string = "";
   isSupported: boolean = false;
   lang: string = "es";
-  isOpenModal: boolean = false;
   enviromentApiUrl: string = "";
   userEmail: string = "";
   userPassword: string = "";
@@ -67,7 +66,6 @@ export class AuthenticationPage implements OnInit {
   async setLang(lang: string) {
     this.lang = lang;
     this.storage.set('appLang', this.lang);
-    this.isOpenModal = false;
     this.translate.use(this.lang);
   }
 
