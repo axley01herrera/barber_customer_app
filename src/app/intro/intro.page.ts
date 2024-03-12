@@ -119,7 +119,7 @@ export class IntroPage implements OnInit {
       if (networkStatus) {
         await this.http.post(apiUrl, '').subscribe((res: any) => {
           if (res.error == 0) {
-            this.storage.set('enviromentApiUrl', apiUrl).then((res: any) => {
+            this.storage.set('enviromentApiUrl', this.url).then((res: any) => {
               this.router.navigate(["authentication"]);
             })
           } else { // Error Not Found Enviroment

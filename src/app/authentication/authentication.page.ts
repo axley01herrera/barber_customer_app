@@ -105,7 +105,7 @@ export class AuthenticationPage implements OnInit {
       if (this.enviromentApiUrl != "") {
         const networkStatus = await this.mainService.getNetworkStatus();
         if (networkStatus) {
-          const apiUrl = this.enviromentApiUrl + ".barberhi/Api/login";
+          const apiUrl = this.enviromentApiUrl + "/Api/login";
           const request = new URLSearchParams();
           request.set('email', this.userEmail);
           request.set('password', this.userPassword);

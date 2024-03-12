@@ -1,56 +1,40 @@
 <ion-content>
   <div class="auth-container">
 
-    <!-- Modal -->
-    <ion-modal [isOpen]="isOpenModal">
-      <ng-template>
-        <div class="auth-container">
-          <div class="row">
-            <div class="col-6 text-center">
-              <input type="radio" name="lang" id="radio-es" class="me-2" [checked]="lang === 'es'"
-                (click)="setLang('es')" /> <label for="radio-es"><img id="header-lang-img" src="assets/img/spain.jpg"
-                  alt="spanish" height="35"></label>
-            </div>
-            <div class="col-6 mb-5 text-center">
-              <input type="radio" name="lang" id="radio-en" class="me-2" [checked]="lang === 'en'"
-                (click)="setLang('en')" /> <label for="radio-en"><img id="header-lang-img" src="assets/img/us.jpg"
-                  alt="spanish" height="35"></label>
-            </div>
+    <div class="card" style="width: 90%;">
+      <div class="card-body">
+        <!-- Logo -->
+        <div class="row">
+          <div class="col-12 text-center mb-3">
+            <img src="assets/img/logo.png" alt="logo" width="100px">
           </div>
         </div>
-      </ng-template>
-    </ion-modal>
-    <!-- End Modal -->
 
-    <!-- Logo -->
-    <div class="row">
-      <div class="col-12 text-center mb-3">
-        <img src="assets/img/logo.png" alt="logo" width="100px">
+        <!-- Ath msg -->
+        <div class="row">
+          <div class="col-12 text-center">
+            <h2 class="fs-1"><span style="color: #009abe;">{{ 'auth.barber' | translate }}</span><span class="text-warning">{{ 'auth.hi' | translate }}</span> </h2>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <input id="txt-email" type="text" class="form-control" placeholder="{{ 'global.email' | translate }}" [(ngModel)]="userEmail" (focus)="onFocusTxtUrl('txt-email')"/>
+        </div>
+        <!-- Password -->
+        <div class="mb-3">
+          <input id="txt-password" type="password" class="form-control" placeholder="{{ 'global.pass' | translate }}" [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')"/>
+        </div>
+
+        <!-- Button Login -->
+        <div class="text-center">
+          <button class="btn btn-primary border-0" style="background-color: #009abe;" (click)="login()">
+            {{ 'global.btn_login' | translate }}
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Ath msg -->
-    <div class="row">
-      <div class="col-12 text-center">
-        <h2><span style="color: #009abe;">{{ 'auth.barber' | translate }}</span><span class="text-warning">{{ 'auth.hi' | translate }}</span> </h2>
-      </div>
-    </div>
-
-    <!-- Email -->
-    <div class="mb-3">
-      <input id="txt-email" type="text" class="form-control" placeholder="{{ 'global.email' | translate }}" [(ngModel)]="userEmail" (focus)="onFocusTxtUrl('txt-email')"/>
-    </div>
-    <!-- Password -->
-    <div class="mb-3">
-      <input id="txt-password" type="password" class="form-control" placeholder="{{ 'global.pass' | translate }}" [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')"/>
-    </div>
-
-    <!-- Button Login -->
-    <div class="text-center">
-      <button class="btn btn-primary border-0" style="background-color: #009abe;" (click)="login()">
-        {{ 'global.btn_login' | translate }}
-      </button>
-    </div>
 
   </div>
 </ion-content>
