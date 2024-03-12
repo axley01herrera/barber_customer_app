@@ -94,17 +94,18 @@ export class AuthenticationPage implements OnInit {
       not_network_msg = res;
     });
 
-    const resultRequiredValues = await this.requiredValues(); console.log(resultRequiredValues);
+    const resultRequiredValues = await this.requiredValues();
     if (resultRequiredValues == 0) {
       if (this.enviromentApiUrl != "") {
-        const networkStatus = await this.mainService.getNetworkStatus(); console.log('networkStatus', networkStatus);
+        const networkStatus = await this.mainService.getNetworkStatus();
         if (networkStatus) {
           const apiUrl = this.enviromentApiUrl + ".barberhi/Api/login";
           const request = {
             'email': this.userEmail,
             'password': this.userPassword
           }
-          await this.http.post(apiUrl, '').subscribe((res: any) => {
+
+          await this.http.post(apiUrl, request).subscribe((res: any) => {
             console.log(res)
 
           }, (error) => {

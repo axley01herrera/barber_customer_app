@@ -8,7 +8,7 @@
   "intro": {
     "welcome": "Welcome",
     "msg1": "We're delighted to have you here. To get started, since it's your first time accessing through the application, we need you to scan the QR code of your usual barbershop or enter the corresponding URL address.",
-    "msg2": "For example, you can enter something similar to: https://demo.barberhi.es/",
+    "msg2": "For example, you can enter something similar to: https://barbername.barberhi.es/",
     "btn_next": "Next",
     "atention": "Atention",
     "required_fields": "Required Fields",
@@ -16,6 +16,7 @@
     "invalid_url": "Invalid URL"
   },
   "auth": {
-    "signin": "Sign In"
+    "barber": "Barber, ",
+    "hi": "Hi"
   }
 }

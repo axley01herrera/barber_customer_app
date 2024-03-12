@@ -23,28 +23,30 @@
 
     <!-- Main -->
     <div class="alert ms-1 me-1">
-
-      <button type="button" class="btn header-item float-end" (click)="openModalLang()">
-        <div *ngIf="lang == 'es';">
-          <img id="header-lang-img" src="assets/img/spain.jpg" alt="spanish" height="16">
-        </div>
-        <div *ngIf="lang == 'en';">
-          <img id="header-lang-img" src="assets/img/us.jpg" alt="spanish" height="16">
-        </div>
-      </button>
-
       <h1 class="alert-heading text-white">{{ 'intro.welcome' | translate }}</h1>
       <p class="text-white">{{ 'intro.msg1' | translate }}</p>
       <hr>
-      <p class="mb-3 text-white">{{ 'intro.msg2' | translate }}</p>
+      <p class="mb-3 text-warning">{{ 'intro.msg2' | translate }}</p>
 
       <div class="mb-3">
-        <input id="txt-url" type="text" class="form-control required" placeholder="url" [(ngModel)]="url" (focus)="onFocusTxtUrl()"/>
+        <input id="txt-url" type="text" class="form-control required" placeholder="url" [(ngModel)]="url"
+          (focus)="onFocusTxtUrl()" />
+      </div>
+
+      <div class="text-center mb-5">
+        <button class="btn btn-primary border-0" style="background-color: #009abe;" (click)="next()">
+          {{ 'intro.btn_next' | translate }}
+        </button>
       </div>
 
       <div class="text-center">
-        <button class="btn btn-primary" (click)="next()">
-          {{ 'intro.btn_next' | translate }}
+        <button type="button" class="btn header-item" (click)="openModalLang()">
+          <div *ngIf="lang == 'es';">
+            <img id="header-lang-img" src="assets/img/spain.jpg" alt="spanish" height="16">
+          </div>
+          <div *ngIf="lang == 'en';">
+            <img id="header-lang-img" src="assets/img/us.jpg" alt="spanish" height="16">
+          </div>
         </button>
       </div>
     </div>

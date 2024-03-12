@@ -30,6 +30,7 @@ export class IntroPage implements OnInit {
     private translate: TranslateService,
     private router: Router,
   ) {
+
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
 
@@ -55,8 +56,10 @@ export class IntroPage implements OnInit {
     });
 
     this.mainService.getStorageEnviromentApiUrl().then((url: any) => {
-      if (url != null)
+      if (url != null) {
+        this.url = url;
         this.router.navigate(["authentication"]);
+      }
     });
   }
 
@@ -111,11 +114,11 @@ export class IntroPage implements OnInit {
       });
       await alert.present();
     } else {
-      const validateURL = await this.validateURL(this.url); console.log(validateURL);
+      const validateURL = await this.validateURL(this.url);
       if (validateURL) {
         const enviroment = await this.getEnviromentApiUrl(this.url);
         const apiUrl = enviroment + ".barberhi/Api/index";
-        const networkStatus = await this.mainService.getNetworkStatus(); console.log('networkStatus', networkStatus);
+        const networkStatus = await this.mainService.getNetworkStatus();
         if(networkStatus) {
           await this.http.post(apiUrl, '').subscribe((res: any) => {
             if (res.error == 0) {
