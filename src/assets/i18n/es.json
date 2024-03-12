@@ -7,7 +7,7 @@
   },
   "intro": {
     "welcome": "Bienvenido",
-    "msg1": "Nos complace tenerte aquí. Para comenzar, como es tu primera vez accediendo a través de la aplicación, necesitamos que escanees el código QR de tu barbería habitual o ingreses la dirección URL correspondiente.",
+    "msg1": "Para comenzar, necesitamos que escanees el código QR de tu barbería habitual o ingreses la dirección URL correspondiente.",
     "msg2": "Por ejemplo, puedes ingresar algo similar a: https://name.barberhi.es",
     "btn_next": "Siguiente",
     "atention": "Atención",

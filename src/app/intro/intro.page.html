@@ -1,5 +1,6 @@
 <ion-content>
   <div class="auth-container">
+
     <!-- Modal -->
     <ion-modal [isOpen]="isOpenModal">
       <ng-template>
@@ -23,24 +24,29 @@
 
     <div class="card" style="width: 90%;">
       <div class="card-body">
+
+        <!-- Logo -->
+        <div class="row">
+          <div class="col-12 text-center">
+            <img src="assets/img/logo.png" alt="logo" width="100px">
+          </div>
+        </div>
+
         <!-- Main -->
         <div class="alert ms-1 me-1">
           <h1 class="alert-heading ">{{ 'intro.welcome' | translate }}</h1>
           <p class="">{{ 'intro.msg1' | translate }}</p>
           <hr>
-          <p class="mb-3 text-warning">{{ 'intro.msg2' | translate }}</p>
-
+          <p class="mb-3">{{ 'intro.msg2' | translate }}</p>
           <div class="mb-3">
             <input id="txt-url" type="text" class="form-control required" placeholder="url" [(ngModel)]="url"
               (focus)="onFocusTxtUrl()" />
           </div>
-
           <div class="text-center mb-5">
-            <button class="btn btn-primary border-0" style="background-color: #009abe;" (click)="next()">
+            <button class="btn btn-primary btn-lg w-100 border-0" style="background-color: #009abe;" (click)="next()">
               {{ 'intro.btn_next' | translate }}
             </button>
           </div>
-
           <div class="text-center">
             <button type="button" class="btn header-item" (click)="openModalLang()">
               <div *ngIf="lang == 'es';">
@@ -55,12 +61,12 @@
       </div>
     </div>
 
-
     <!-- QR -->
     <ion-fab slot="fixed" vertical="bottom" horizontal="end">
       <ion-fab-button (click)="scan()" [disabled]="!isSupported">
         <ion-icon name="scan"></ion-icon>
       </ion-fab-button>
     </ion-fab>
+    
   </div>
 </ion-content>

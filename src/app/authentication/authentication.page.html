@@ -1,11 +1,11 @@
 <ion-content>
   <div class="auth-container">
-
     <div class="card" style="width: 90%;">
       <div class="card-body">
+
         <!-- Logo -->
         <div class="row">
-          <div class="col-12 text-center mb-3">
+          <div class="col-12 text-center">
             <img src="assets/img/logo.png" alt="logo" width="100px">
           </div>
         </div>
@@ -21,6 +21,7 @@
         <div class="mb-3">
           <input id="txt-email" type="text" class="form-control" placeholder="{{ 'global.email' | translate }}" [(ngModel)]="userEmail" (focus)="onFocusTxtUrl('txt-email')"/>
         </div>
+
         <!-- Password -->
         <div class="mb-3">
           <input id="txt-password" type="password" class="form-control" placeholder="{{ 'global.pass' | translate }}" [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')"/>
@@ -28,13 +29,12 @@
 
         <!-- Button Login -->
         <div class="text-center">
-          <button class="btn btn-primary border-0" style="background-color: #009abe;" (click)="login()">
+          <button class="btn btn-lg w-100 btn-primary border-0" style="background-color: #009abe;" (click)="login()">
             {{ 'global.btn_login' | translate }}
           </button>
         </div>
+
       </div>
     </div>
-
-
   </div>
 </ion-content>
