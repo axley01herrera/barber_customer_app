@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Router } from "@angular/router";
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController } from '@ionic/angular';
-import { HttpClient ,HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { MainServiceService } from '../service/main-service.service';
 
@@ -96,11 +96,9 @@ export class AuthenticationPage implements OnInit {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded'
       })
     };
-
-    var user=[];
 
     const resultRequiredValues = await this.requiredValues();
     if (resultRequiredValues == 0) {
@@ -112,22 +110,10 @@ export class AuthenticationPage implements OnInit {
           request.set('email', this.userEmail);
           request.set('password', this.userPassword);
           await this.http.post(apiUrl, request.toString(), httpOptions).subscribe((res: any) => {
-            if (res.error === 0) {
-              this.setOpen(true, "Inicio de sesión correcto.");
-                 user = res.data;
-                console.log(user);
-            }
-            else if (res.error === 1) {
-              if (res.msg === 'EMAIL_NOT_FOUND') {
-                document.getElementById('txt-email')?.classList.add('is-invalid');
-                this.setOpen(true, "Dirección de correo desconocida.");
-              } else if (res.msg === 'INVALID_PASSWORD') {
-                document.getElementById('txt-password')?.classList.add('is-invalid');
-                this.setOpen(true, "Contraseña Incorrecta.");
-                             }
-            }
+            console
+
           }, (error) => {
-            this.setOpen(true, "Ha ocurrido un error.");
+
           });
 
         } else { // Error network
@@ -141,16 +127,6 @@ export class AuthenticationPage implements OnInit {
       } else // Error empty enviromentApiUrl
         this.router.navigate(["intro"]);
     }
-  }
-
-  isAlertOpen = false;
-  alertButtons = ['Cerrar'];
-  AlertTitle = ['Información'];
-  AlertMsg: string = '';
-
-  setOpen(isOpen: boolean, msg:string) {
-    this.isAlertOpen = isOpen;
-    this.AlertMsg = msg;
   }
 
   async requiredValues() {
