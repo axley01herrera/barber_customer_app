@@ -22,6 +22,16 @@
     </ion-modal>
     <!-- End Modal -->
 
+      <!-- Alert -->
+      <ion-alert
+      [isOpen]="isAlertOpen"
+      [header]="AlertTitle"
+      [message]="AlertMsg"
+      [buttons]="alertButtons"
+      (didDismiss)="setOpen(false,'')"
+    ></ion-alert>
+    <!-- End Alert -->
+
     <!-- Logo -->
     <div class="row">
       <div class="col-12 text-center mb-3">
