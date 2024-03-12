@@ -114,42 +114,31 @@ export class IntroPage implements OnInit {
       });
       await alert.present();
     } else {
-      const validateURL = await this.validateURL(this.url);
-      if (validateURL) {
-        const enviroment = await this.getEnviromentApiUrl(this.url);
-        const apiUrl = enviroment + ".barberhi/Api/index";
-        const networkStatus = await this.mainService.getNetworkStatus();
-        if(networkStatus) {
-          await this.http.post(apiUrl, '').subscribe((res: any) => {
-            if (res.error == 0) {
-              this.storage.set('enviromentApiUrl', enviroment).then((res: any) => {
-                this.router.navigate(["authentication"]);
-              })
-            } else { // Error Not Found Enviroment
-              txtUrl?.classList.add('is-invalid');
-              this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
-            }
-          }, (error) => { // Error Not Found Enviroment
+      const apiUrl = this.url + "/Api/index";
+      const networkStatus = await this.mainService.getNetworkStatus();
+      if (networkStatus) {
+        await this.http.post(apiUrl, '').subscribe((res: any) => {
+          if (res.error == 0) {
+            this.storage.set('enviromentApiUrl', apiUrl).then((res: any) => {
+              this.router.navigate(["authentication"]);
+            })
+          } else { // Error Not Found Enviroment
             txtUrl?.classList.add('is-invalid');
             this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
-          });
-        } else { // Error network
-          const alert = await this.alertController.create({
-            header: String(introAtention),
-            message: String(not_network_msg),
-            buttons: [String(introOk)],
-          });
-          await alert.present();
-        }
-      } else { // Error Invalid Url
-        txtUrl?.classList.add('is-invalid');
+          }
+        }, (error) => { // Error Not Found Enviroment
+          txtUrl?.classList.add('is-invalid');
+          this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
+        });
+      } else { // Error network
         const alert = await this.alertController.create({
           header: String(introAtention),
-          message: String(introInvalidURL),
+          message: String(not_network_msg),
           buttons: [String(introOk)],
         });
         await alert.present();
       }
+
     }
   }
 
@@ -175,21 +164,6 @@ export class IntroPage implements OnInit {
   async onFocusTxtUrl() {
     const txtUrl = document.getElementById('txt-url');
     txtUrl?.classList.remove('is-invalid')
-  }
-
-  async validateURL(url: string) {
-    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-    return urlRegex.test(url);
-  }
-
-  async getEnviromentApiUrl(url: string) {
-    const indexPunto = url.indexOf('.');
-
-    if (indexPunto === -1) {
-      return null;
-    }
-
-    return url.substring(0, indexPunto);
   }
 
   async showAlert(headerText: String, messageText: String, buttonText: String) {
