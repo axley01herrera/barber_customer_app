@@ -63,8 +63,14 @@ export class AuthenticationPage implements OnInit {
     this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
       if (companyInfo != null)
         this.companyInfo = companyInfo;
+    });
 
-      console.log(this.companyInfo);
+    this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
+      if(customerInfo) {
+        this.userEmail = customerInfo.email;
+        this.userPassword = customerInfo.password;
+        this.login();
+      }
     });
   }
 
