@@ -1,15 +1,91 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>{{ 'tabPanel.home' | translate }}</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title slot="start">{{ 'tabPanel.home' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
   <!-- Button Create  -->
-  <div class="text-center ms-1 me-1 mt-2 mb-5">
-    <button class="btn btn-lg w-100 btn-primary border-0" style="background-color: #009abe;">
-      {{ 'global.btn_create_appointment' | translate }}
+  <div class="text-end ms-1 me-1 mt-2 mb-5">
+    <button class="btn btn-primary btn-lg border-0" style="background-color: #009abe;">
+      <ion-icon name="calendar-outline"></ion-icon> {{ 'global.btn_create_appointment' | translate }}
     </button>
+  </div>
+
+  <!-- Upcoming Appointments -->
+  <div *ngFor="let appointment of upcomingAppointments">
+    <div class="card mb-5 me-2 ms-2">
+      <div class="card-body">
+        <div class="row gx-9 h-100">
+          <div class="col-12">
+            <div class="d-flex flex-column h-100">
+
+              <!-- Date -->
+              <div class="flex-shrink-0 me-5 mb-2">
+                <span class="text-gray-800 fs-4 fw-bold me-2 d-block lh-1 pb-1">
+                  {{ appointment.date }}
+                </span>
+                <span class="text-gray-800 fs-7 fw-bold">
+                  {{ appointment.time}}
+                </span>
+              </div>
+
+              <div *ngFor="let services of appointment.services">
+                <div class="mb-5 scroll-container">
+                  <div class=" align-items-center  d-grid gap-2">
+                    <div class=" align-items-center me-5 me-xl-13">
+                      <div class="fw-semibold">
+                        <ion-icon color="primary" name="radio-button-on-outline"></ion-icon> <span class="fs-6">{{
+                          services.title }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center flex-wrap d-grid gap-2">
+                <!-- Employee -->
+                <div class="d-flex align-items-center me-5 me-xl-13">
+                  <div class="symbol symbol-30px symbol-circle me-3">
+                    <img src="data:image/png;base64,{{ appointment.empAvatar }}" alt="Employee Avatar" width="50px" style="border-radius: 50%;">
+                  </div>
+                  <div class="m-0">
+                    <span class="fw-semibold text-gray-400 d-block fs-8">
+                      {{ 'global.emp' | translate }}
+                    </span>
+                    <span class="fw-bold text-gray-800 fs-7">
+                      {{ appointment.empInfo[0].name }}
+                    </span>
+                  </div>
+                </div>
+                <!-- Price -->
+                <div class="d-flex align-items-center">
+                  <div class="symbol symbol-30px symbol-circle me-3">
+                    <span class="symbol-label bg-success">
+                      <i class="ki-duotone ki-abstract-41 fs-5 text-white">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                      </i>
+                    </span>
+                  </div>
+                  <div class="m-0">
+                    <span class="fw-semibold text-gray-400 d-block fs-8">
+                      {{ 'global.price' | translate }}
+                    </span>
+                    <span class="fw-bold text-gray-800 fs-7">
+                      {{ appointment.price }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </ion-content>
 

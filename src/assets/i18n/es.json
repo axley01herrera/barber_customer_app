@@ -8,7 +8,9 @@
     "btn_confirm": "Confirmar",
     "btn_create_appointment": "Crear Cita",
     "barber": "Barber, ",
-    "hi": "Hi"
+    "hi": "Hi",
+    "emp": "Empleado",
+    "price": "Precio"
   },
   "intro": {
     "msg1": "Escanea el código QR de tu barbería habitual o ingresa la dirección URL correspondiente.",

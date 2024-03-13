@@ -8,7 +8,9 @@
     "btn_confirm": "Confirm",
     "btn_create_appointment": "Create Appointment",
     "barber": "Barber, ",
-    "hi": "Hi"
+    "hi": "Hi",
+    "emp": "Employee",
+    "price": "Price"
   },
   "intro": {
     "msg1": "Scan the QR code of your regular barber shop or enter the corresponding URL address.",
