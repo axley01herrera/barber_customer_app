@@ -16,23 +16,16 @@ export class DashboardPage implements OnInit {
   platform: string = "";
   isSupported: boolean = false;
   lang: string = "es";
+  customerInfo: any = {};
 
   constructor(
     private storage: Storage,
     private translate: TranslateService,
     private mainService: MainServiceService,
   ) {
-    
+
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
-    this.mainService.deviceInfo().then((device: any) => {
-      this.platform = device.platform;
-      if (this.platform == 'android' || this.platform == 'ios') {
-        this.mainService.barcodeSupported().then((isSupported: boolean) => {
-          this.isSupported = isSupported;
-        });
-      }
-    });
 
     this.mainService.getStorageLang().then((storageLang: any) => {
       if (storageLang == null) {
@@ -45,36 +38,15 @@ export class DashboardPage implements OnInit {
 
       this.translate.use(this.lang);
     });
+
+    this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
+      this.customerInfo = customerInfo;
+      console.log(this.customerInfo);
+    })
   }
-  @ViewChild(IonModal) modal!: IonModal;
-
-  message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
-  name: string = "";
-
-  cancel() {
-    this.modal.dismiss(null, 'cancel');
-  }
-
-  confirm() {
-    this.modal.dismiss(this.name, 'confirm');
-    console.log(this.name);
-  }
-
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    if (ev.detail.role === 'confirm') {
-      this.message = `Hello, ${ev.detail.data}!`;
-    }
-  }
-
   ngOnInit() {
   }
 
-  
-  async setLang(lang: string) {
-    this.lang = lang;
-    this.storage.set('appLang', this.lang);
-    this.translate.use(this.lang);
-  }
+
 
 }

@@ -6,6 +6,7 @@
     "not_network_msg": "No tienes conexion a internet",
     "btn_cancel": "Cancelar",
     "btn_confirm": "Confirmar",
+    "btn_create_appointment": "Crear Cita",
     "barber": "Barber, ",
     "hi": "Hi"
   },
@@ -19,9 +20,11 @@
     "ok": "Entendido",
     "invalid_url": "Rectifique su URL"
   },
-  "dashboard": {
-    "title": "Tablero",
-    "btn_createApp":"Crear Cita"
+  "tabPanel": {
+    "home": "Inicio",
+    "appointment": "Citas",
+    "account": "Cuenta"
   }
+
 }
 

@@ -59,6 +59,14 @@ export class MainServiceService {
     return lang;
   }
 
+  async getStorageCustomerInfo() {
+    const lang = this.storage.get('customerInfo').then((res: any) => {
+      return res;
+    });
+
+    return lang;
+  }
+
   /* Network */
   async getNetworkStatus() {
     const status = await Network.getStatus();

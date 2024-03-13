@@ -18,9 +18,5 @@
     "required_fields": "Campos Requeridos",
     "ok": "Entendido",
     "invalid_url": "Rectifique su URL"
-  },
-  "dashboard": {
-    "title": "Tablero",
-    "btn_createApp":"Crear Cita"
   }
 }

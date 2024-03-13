@@ -1,36 +1,28 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title slot="start">{{ 'dashboard.title' | translate }}</ion-title>
-   <ion-button size="small" class="p-2" slot="end" id="open-modal" expand="block">{{ 'dashboard.btn_createApp' | translate }}</ion-button>
+    <ion-title>{{ 'tabPanel.home' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
-  <div class="example-content">
-    <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-      <ng-template>
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons slot="start">
-              <ion-button color="danger" (click)="cancel()">{{ 'global.btn_cancel' | translate }}</ion-button>
-            </ion-buttons>
-            <ion-title>{{ 'dashboard.btn_createApp' | translate }}</ion-title>
-            <ion-buttons slot="end">
-              <ion-button color="primary" (click)="confirm()" [strong]="true">{{ 'global.btn_confirm' | translate }}</ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-          <ion-item>
-            <ion-input
-              label="Enter your name"
-              labelPlacement="stacked"
-              type="text"
-              placeholder="Your name"
-              [(ngModel)]="name"
-            ></ion-input>
-          </ion-item>
-        </ion-content>
-      </ng-template>
-    </ion-modal>
+  <!-- Button Create  -->
+  <div class="text-center ms-1 me-1 mt-2 mb-5">
+    <button class="btn btn-lg w-100 btn-primary border-0" style="background-color: #009abe;">
+      {{ 'global.btn_create_appointment' | translate }}
+    </button>
   </div>
 </ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="dashboard">
+      <ion-icon name="home-outline" color="primary"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button tab="appointment">
+      <ion-icon name="calendar-outline"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button tab="account">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
