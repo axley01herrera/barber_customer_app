@@ -20,7 +20,6 @@ export class IntroPage implements OnInit {
   barcodes: Barcode[] = [];
   lang: string = "es";
   url: string = "";
-  isOpenModal: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -162,12 +161,11 @@ export class IntroPage implements OnInit {
   async setLang(lang: string) {
     this.lang = lang;
     this.storage.set('appLang', this.lang);
-    this.isOpenModal = false;
     this.translate.use(this.lang);
   }
 
   async openModalLang() {
-    this.isOpenModal = true;
+    this.router.navigate(["set-lang"]);
   }
 
   async onFocusTxtUrl() {

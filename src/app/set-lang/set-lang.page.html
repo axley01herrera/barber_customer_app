@@ -1,0 +1,20 @@
+<ion-content>
+  <div class="auth-container">
+    <div class="card" style="width: 90%;">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6 text-center mb-4" style="margin-top: 25px;" >
+            <input type="radio" name="lang" id="radio-es" class="me-2" [checked]="lang === 'es'"
+              (click)="setLang('es')" /> <label for="radio-es"><img id="header-lang-img" src="assets/img/spain.jpg"
+                alt="spanish" height="35"></label>
+          </div>
+          <div class="col-6 text-center mb-4" style="margin-top: 25px;">
+            <input type="radio" name="lang" id="radio-en" class="me-2" [checked]="lang === 'en'"
+              (click)="setLang('en')" /> <label for="radio-en"><img id="header-lang-img" src="assets/img/us.jpg"
+                alt="spanish" height="35"></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

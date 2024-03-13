@@ -1,22 +1,27 @@
 {
   "global": {
     "email": "Email",
-    "pass": "Contraseña",
-    "btn_login": "Entrar",
-    "not_network_msg": "No tienes conexion a internet",
-    "btn_cancel": "Cancelar",
-    "btn_confirm": "Confirmar",
+    "pass": "Password",
+    "btn_login": "Log In",
+    "not_network_msg": "You are not connected to the internet",
+    "btn_cancel": "Cancel",
+    "btn_confirm": "Confirm",
+    "btn_create_appointment": "Create Appointment",
     "barber": "Barber, ",
     "hi": "Hi"
   },
   "intro": {
-    "msg1": "Escanea el código QR de tu barbería habitual o ingresa la dirección URL correspondiente.",
-    "msg2": "Ejemplo:",
-    "exampleUrl": "https://barbershop.barberhi.es",
-    "btn_next": "Siguiente",
-    "atention": "Atención",
-    "required_fields": "Campos Requeridos",
-    "ok": "Entendido",
-    "invalid_url": "Rectifique su URL"
+    "msg1": "Scan the QR code of your regular barber shop or enter the corresponding URL address.",
+    "exampleUrl": "Ex. https://barbershop.barberhi.es",
+    "btn_next": "Next",
+    "atention": "Attention",
+    "required_fields": "Required Fields",
+    "ok": "Got It",
+    "invalid_url": "Please correct your URL"
+  },
+  "tabPanel": {
+    "home": "Home",
+    "appointment": "Appointments",
+    "account": "Account"
   }
 }

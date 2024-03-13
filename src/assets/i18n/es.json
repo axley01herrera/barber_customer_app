@@ -12,8 +12,7 @@
   },
   "intro": {
     "msg1": "Escanea el código QR de tu barbería habitual o ingresa la dirección URL correspondiente.",
-    "msg2": "Ejemplo:",
-    "exampleUrl": "https://barbershop.barberhi.es",
+    "exampleUrl": "Ej. https://barbershop.barberhi.es",
     "btn_next": "Siguiente",
     "atention": "Atención",
     "required_fields": "Campos Requeridos",
@@ -25,6 +24,5 @@
     "appointment": "Citas",
     "account": "Cuenta"
   }
-
 }
 
