@@ -9,8 +9,4 @@ export class AppComponent {
   constructor(
     private router: Router,
   ) {}
-
-  async closeSession(){
-    this.router.navigate(["/authentication"]);
-  }
 }

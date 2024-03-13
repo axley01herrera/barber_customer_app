@@ -1,28 +1,26 @@
 {
   "global": {
     "email": "Email",
-    "pass": "Password",
-    "btn_login": "Login",
-    "not_network_msg": "You do not have an internet connection",
-    "btn_cancel": "Cancel",
-    "btn_confirm": "Confirm"
-  },
-  "intro": {
-    "welcome": "Welcome",
-    "msg1": "We're delighted to have you here. To get started, since it's your first time accessing through the application, we need you to scan the QR code of your usual barbershop or enter the corresponding URL address.",
-    "msg2": "For example, you can enter something similar to: https://name.barberhi.es/",
-    "btn_next": "Next",
-    "atention": "Atention",
-    "required_fields": "Required Fields",
-    "ok": "Ok",
-    "invalid_url": "Invalid URL"
-  },
-  "dashboard": {
-    "title": "Dashboard",
-    "btn_createApp":"Create Appointment"
-  },
-  "auth": {
+    "pass": "Contraseña",
+    "btn_login": "Entrar",
+    "not_network_msg": "No tienes conexion a internet",
+    "btn_cancel": "Cancelar",
+    "btn_confirm": "Confirmar",
     "barber": "Barber, ",
     "hi": "Hi"
+  },
+  "intro": {
+    "msg1": "Escanea el código QR de tu barbería habitual o ingresa la dirección URL correspondiente.",
+    "msg2": "Ejemplo:",
+    "exampleUrl": "https://barbershop.barberhi.es",
+    "btn_next": "Siguiente",
+    "atention": "Atención",
+    "required_fields": "Campos Requeridos",
+    "ok": "Entendido",
+    "invalid_url": "Rectifique su URL"
+  },
+  "dashboard": {
+    "title": "Tablero",
+    "btn_createApp":"Crear Cita"
   }
 }

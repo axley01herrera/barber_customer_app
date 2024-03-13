@@ -18,6 +18,7 @@ export class AuthenticationPage implements OnInit {
   isSupported: boolean = false;
   lang: string = "es";
   enviromentApiUrl: string = "";
+  companyInfo: any = {};
   userEmail: string = "";
   userPassword: string = "";
 
@@ -57,6 +58,13 @@ export class AuthenticationPage implements OnInit {
         this.enviromentApiUrl = url;
       } else
         this.router.navigate(["intro"]);
+    });
+
+    this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
+      if (companyInfo != null)
+        this.companyInfo = companyInfo;
+
+      console.log(this.companyInfo);
     });
   }
 
@@ -107,23 +115,22 @@ export class AuthenticationPage implements OnInit {
           const request = new URLSearchParams();
           request.set('email', this.userEmail);
           request.set('password', this.userPassword);
-          await this.http.post(apiUrl, request.toString(), httpOptions).subscribe((res: any) => {
-            if (res.error === 0) {
-              this.router.navigate(['/dashboard']);
-          }
-          else if (res.error === 1) {
-            if (res.msg === 'EMAIL_NOT_FOUND') {
-              document.getElementById('txt-email')?.classList.add('is-invalid');
-             
-            } else if (res.msg === 'INVALID_PASSWORD') {
-              document.getElementById('txt-password')?.classList.add('is-invalid');
-           
-                           }
-          }
+          await this.http.post(apiUrl, request.toString(), httpOptions).subscribe((resApiLogin: any) => { // Enviroment Auth
+            console.log(resApiLogin);
+            if (resApiLogin.error === 0) {
+              this.storage.set('customerInfo', resApiLogin.customerInfo).then((res: any) => {
+                this.router.navigate(['dashboard']);
+              });
+            } else if (resApiLogin.error === 1) {
+              if (resApiLogin.msg === 'EMAIL_NOT_FOUND') {
+                document.getElementById('txt-email')?.classList.add('is-invalid');
+              } else if (resApiLogin.msg === 'INVALID_PASSWORD') {
+                document.getElementById('txt-password')?.classList.add('is-invalid');
+              }
+            }
           }, (error) => {
-
+            alert('An error has ocurred');
           });
-
         } else { // Error network
           const alert = await this.alertController.create({
             header: String(introAtention),

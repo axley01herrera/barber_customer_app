@@ -34,12 +34,11 @@
 
         <!-- Main -->
         <div class="alert ms-1 me-1">
-          <h1 class="alert-heading ">{{ 'intro.welcome' | translate }}</h1>
+          <h2 class="fs-1"><span style="color: #009abe;">{{ 'global.barber' | translate }}</span><span class="text-warning">{{ 'global.hi' | translate }}</span> </h2>
           <p class="">{{ 'intro.msg1' | translate }}</p>
           <hr>
-          <p class="mb-3">{{ 'intro.msg2' | translate }}</p>
           <div class="mb-3">
-            <input id="txt-url" type="text" class="form-control required" placeholder="url" [(ngModel)]="url"
+            <input id="txt-url" type="text" class="form-control required" placeholder="{{ 'intro.exampleUrl' | translate }}" [(ngModel)]="url"
               (focus)="onFocusTxtUrl()" />
           </div>
           <div class="text-center mb-5">
@@ -67,6 +66,6 @@
         <ion-icon name="scan"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    
+
   </div>
 </ion-content>

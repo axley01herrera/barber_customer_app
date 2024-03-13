@@ -117,10 +117,19 @@ export class IntroPage implements OnInit {
       const apiUrl = this.url + "/Api/index";
       const networkStatus = await this.mainService.getNetworkStatus();
       if (networkStatus) {
-        await this.http.post(apiUrl, '').subscribe((res: any) => {
-          if (res.error == 0) {
+        await this.http.post(apiUrl, '').subscribe((resApiIndex: any) => {
+          if (resApiIndex.error == 0) {
+            let companyInfo = {
+              'name': resApiIndex.companyName,
+              'type': resApiIndex.companyType,
+              'phone': resApiIndex.companyPhone1,
+              'email': resApiIndex.companyEmail,
+              'avatar': resApiIndex.companyAvatar,
+            }
             this.storage.set('enviromentApiUrl', this.url).then((res: any) => {
-              this.router.navigate(["authentication"]);
+              this.storage.set('companyInfo', companyInfo).then((res: any) => {
+                this.router.navigate(["authentication"]);
+              })
             })
           } else { // Error Not Found Enviroment
             txtUrl?.classList.add('is-invalid');
