@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title slot="start">{{ 'dashboard.title' | translate }}</ion-title>
+   <ion-button size="small" class="p-2" slot="end" id="open-modal" expand="block">{{ 'dashboard.btn_createApp' | translate }}</ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="example-content">
+    <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button color="danger" (click)="cancel()">{{ 'global.btn_cancel' | translate }}</ion-button>
+            </ion-buttons>
+            <ion-title>{{ 'dashboard.btn_createApp' | translate }}</ion-title>
+            <ion-buttons slot="end">
+              <ion-button color="primary" (click)="confirm()" [strong]="true">{{ 'global.btn_confirm' | translate }}</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-item>
+            <ion-input
+              label="Enter your name"
+              labelPlacement="stacked"
+              type="text"
+              placeholder="Your name"
+              [(ngModel)]="name"
+            ></ion-input>
+          </ion-item>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+  </div>
+</ion-content>

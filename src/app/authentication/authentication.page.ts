@@ -108,8 +108,18 @@ export class AuthenticationPage implements OnInit {
           request.set('email', this.userEmail);
           request.set('password', this.userPassword);
           await this.http.post(apiUrl, request.toString(), httpOptions).subscribe((res: any) => {
-            console
-
+            if (res.error === 0) {
+              this.router.navigate(['/dashboard']);
+          }
+          else if (res.error === 1) {
+            if (res.msg === 'EMAIL_NOT_FOUND') {
+              document.getElementById('txt-email')?.classList.add('is-invalid');
+             
+            } else if (res.msg === 'INVALID_PASSWORD') {
+              document.getElementById('txt-password')?.classList.add('is-invalid');
+           
+                           }
+          }
           }, (error) => {
 
           });

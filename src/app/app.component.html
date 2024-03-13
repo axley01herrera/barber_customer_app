@@ -1,3 +1,24 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+<ion-router-outlet>
+  <ion-app>
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="dashboard">
+          <ion-icon name="home-outline"></ion-icon>
+         Inicio
+        </ion-tab-button>
+        <ion-tab-button tab="appointment">
+          <ion-icon name="calendar-outline"></ion-icon>
+         Citas
+        </ion-tab-button>
+        <ion-tab-button tab="account">
+          <ion-icon name="person-circle-outline"></ion-icon>
+         Cuenta
+        </ion-tab-button>
+        <ion-tab-button (click)="closeSession()">
+          <ion-icon name="log-out-outline"></ion-icon>
+         Cerrar Sesión
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-app>
+</ion-router-outlet>

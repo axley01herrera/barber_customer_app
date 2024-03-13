@@ -15,6 +15,19 @@ const routes: Routes = [
     path: 'authentication',
     loadChildren: () => import('./authentication/authentication.module').then( m => m.AuthenticationPageModule)
   },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
+  {
+    path: 'appointment',
+    loadChildren: () => import('./appointment/appointment.module').then((m) => m.AppointmentPageModule),
+  },
+  {
+    path: 'account',
+    loadChildren: () => import('./account/account.module').then((m) => m.AccountPageModule),
+  },
+
 ];
 
 @NgModule({

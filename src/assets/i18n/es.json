@@ -3,7 +3,9 @@
     "email": "Email",
     "pass": "Contraseña",
     "btn_login": "Entrar",
-    "not_network_msg": "No tienes conexion a internet"
+    "not_network_msg": "No tienes conexion a internet",
+    "btn_cancel": "Cancelar",
+    "btn_confirm": "Confirmar"
   },
   "intro": {
     "welcome": "Bienvenido",
@@ -14,6 +16,10 @@
     "required_fields": "Campos Requeridos",
     "ok": "Entendido",
     "invalid_url": "Rectifique su URL"
+  },
+  "dashboard": {
+    "title": "Tablero",
+    "btn_createApp":"Crear Cita"
   },
   "auth": {
     "barber": "Barber, ",

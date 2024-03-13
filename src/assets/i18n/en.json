@@ -3,7 +3,9 @@
     "email": "Email",
     "pass": "Password",
     "btn_login": "Login",
-    "not_network_msg": "You do not have an internet connection"
+    "not_network_msg": "You do not have an internet connection",
+    "btn_cancel": "Cancel",
+    "btn_confirm": "Confirm"
   },
   "intro": {
     "welcome": "Welcome",
@@ -14,6 +16,10 @@
     "required_fields": "Required Fields",
     "ok": "Ok",
     "invalid_url": "Invalid URL"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "btn_createApp":"Create Appointment"
   },
   "auth": {
     "barber": "Barber, ",
