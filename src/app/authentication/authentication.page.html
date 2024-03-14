@@ -13,18 +13,21 @@
         <!-- Ath msg -->
         <div class="row">
           <div class="col-12 text-center">
-            <h5 class="fs-5"><span style="color: #009abe;">{{ companyInfo.type }}, </span><span class="text-warning">{{ companyInfo.name }}</span> </h5>
+            <h5 class="fs-5"><span style="color: #009abe;">{{ companyInfo.type }}, </span><span class="text-warning">{{
+                companyInfo.name }}</span> </h5>
           </div>
         </div>
 
         <!-- Email -->
         <div class="mb-3">
-          <input id="txt-email" type="text" class="form-control" placeholder="{{ 'global.email' | translate }}" [(ngModel)]="userEmail" (focus)="onFocusTxtUrl('txt-email')"/>
+          <input id="txt-email" type="text" class="form-control" placeholder="{{ 'global.email' | translate }}"
+            [(ngModel)]="userEmail" (focus)="onFocusTxtUrl('txt-email')" />
         </div>
 
         <!-- Password -->
         <div class="mb-3">
-          <input id="txt-password" type="password" class="form-control" placeholder="{{ 'global.pass' | translate }}" [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')"/>
+          <input id="txt-password" type="password" class="form-control" placeholder="{{ 'global.pass' | translate }}"
+            [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')" />
         </div>
 
         <!-- Button Login -->
@@ -36,4 +39,13 @@
       </div>
     </div>
   </div>
+
+  <ion-alert
+    [isOpen]="isAlertOpen "
+    header="{{ alert.header }}"
+    subHeader=""
+    message="{{ alert.message }}"
+    [buttons]="alert.buttons"
+    (didDismiss)="showHideAlert(false)"
+  ></ion-alert>
 </ion-content>

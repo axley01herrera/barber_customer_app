@@ -28,8 +28,9 @@ export class IntroPage implements OnInit {
     private storage: Storage,
     private translate: TranslateService,
     private router: Router,
-  ) {
+  ) { }
 
+  ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
 
@@ -41,7 +42,9 @@ export class IntroPage implements OnInit {
         });
       }
     });
+  }
 
+  ionViewWillEnter() {
     this.mainService.getStorageLang().then((storageLang: any) => {
       if (storageLang == null) {
         this.mainService.deviceLang().then((deviceLang: any) => {
@@ -61,8 +64,6 @@ export class IntroPage implements OnInit {
       }
     });
   }
-
-  ngOnInit() { }
 
   async scan(): Promise<void> {
     const granted = await this.requestPermissions();

@@ -3,6 +3,9 @@ import { Device } from '@capacitor/device';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 import { Storage } from '@ionic/storage-angular';
 import { Network } from '@capacitor/network';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { LoadingController } from '@ionic/angular';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +14,8 @@ export class MainServiceService {
 
   constructor(
     private storage: Storage,
+    private auth: Auth,
+    private loadingCtrl: LoadingController,
   ) {
     this.storage.create();
   }
@@ -27,7 +32,7 @@ export class MainServiceService {
   }
 
   /* Bar Code */
-  async barcodeSupported() {
+  barcodeSupported() {
     const isSupported = BarcodeScanner.isSupported().then((res: any) => {
       return res.supported;
     });
@@ -35,7 +40,7 @@ export class MainServiceService {
   }
 
   /* Storage */
-  async getStorageLang() {
+  getStorageLang() {
     const lang = this.storage.get('appLang').then((res: any) => {
       return res;
     });
@@ -43,7 +48,7 @@ export class MainServiceService {
     return lang;
   }
 
-  async getStorageEnviromentApiUrl() {
+  getStorageEnviromentApiUrl() {
     const lang = this.storage.get('enviromentApiUrl').then((res: any) => {
       return res;
     });
@@ -51,7 +56,7 @@ export class MainServiceService {
     return lang;
   }
 
-  async getStorageCompanyInfo() {
+  getStorageCompanyInfo() {
     const lang = this.storage.get('companyInfo').then((res: any) => {
       return res;
     });
@@ -59,7 +64,7 @@ export class MainServiceService {
     return lang;
   }
 
-  async getStorageCustomerInfo() {
+  getStorageCustomerInfo() {
     const lang = this.storage.get('customerInfo').then((res: any) => {
       return res;
     });
@@ -72,4 +77,21 @@ export class MainServiceService {
     const status = await Network.getStatus();
     return status.connected;
   }
+
+  /* Firebase */
+  fireSignIn(user: any) {
+    return signInWithEmailAndPassword(this.auth, user.email, user.password)
+  }
+
+  fireSignUp(user: any) {
+    return createUserWithEmailAndPassword(this.auth, user.email, user.password)
+  }
+
+  /* Loader */
+  loader() {
+    return this.loadingCtrl.create()
+  }
+
+
+
 }

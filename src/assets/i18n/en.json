@@ -10,7 +10,8 @@
     "barber": "Barber, ",
     "hi": "Hi",
     "emp": "Employee",
-    "price": "Price"
+    "price": "Price",
+    "firePassMsg": "From the application we need strong passwords so at least you must have a password that is at least 6 characters long. Please log in to your profile on the website and update your password. Thank you."
   },
   "intro": {
     "msg1": "Scan the QR code of your regular barber shop or enter the corresponding URL address.",
