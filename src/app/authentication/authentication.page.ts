@@ -4,7 +4,6 @@ import { Router } from "@angular/router";
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-authentication',
@@ -23,17 +22,20 @@ export class AuthenticationPage implements OnInit {
   userPassword: string = "";
 
   isAlertOpen = false;
-  alert = {
-    header: "",
-    message: "",
-    buttons: ['Ok']
-  }
 
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     })
   };
+
+  introAtention: String = "";
+  introRequiredFields: String = "";
+  introOk: String = "";
+  introInvalidURL: String = "";
+  not_network_msg: String = "";
+  firePassMsg: String = "";
+  error_msg: String = "";
 
   constructor(
     private router: Router,
@@ -98,116 +100,103 @@ export class AuthenticationPage implements OnInit {
   }
 
   async login() {
-
-    let introAtention: String = "";
-    let introRequiredFields: String = "";
-    let introOk: String = "";
-    let introInvalidURL: String = "";
-    let not_network_msg: String = "";
-    let firePassMsg: String = "";
-
-    // Alerts Msg
-    this.translate.get('intro.atention').subscribe((res: string) => {
-      introAtention = res;
-    });
-    this.translate.get('intro.required_fields').subscribe((res: string) => {
-      introRequiredFields = res;
-    });
-    this.translate.get('intro.ok').subscribe((res: string) => {
-      introOk = res;
-    });
-    this.translate.get('intro.invalid_url').subscribe((res: any) => {
-      introInvalidURL = res;
-    });
-    this.translate.get('global.not_network_msg').subscribe((res: any) => {
-      not_network_msg = res;
-    });
-    this.translate.get('global.firePassMsg').subscribe((res: any) => {
-      firePassMsg = res;
-    })
-
     const resultRequiredValues = await this.requiredValues();
-
     if (resultRequiredValues == 0) { // Check Required Values
       if (this.enviromentApiUrl != "") { // Check Enviroent Url
         const networkStatus = await this.mainService.getNetworkStatus();
         if (networkStatus) { // Check Network Status
-          const apiUrl = this.enviromentApiUrl + "/Api/login";
-          const request = new URLSearchParams();
 
-          request.set('email', this.userEmail);
-          request.set('password', this.userPassword);
+          const loader = await this.mainService.loader();
+          await loader.present();
 
-          this.http.post(apiUrl, request.toString(), this.httpOptions).subscribe((resApiLogin: any) => { // Api SignIn
+          const loginRequest = new URLSearchParams();
+          loginRequest.set('email', this.userEmail);
+          loginRequest.set('password', this.userPassword);
+          loginRequest.toString();
+
+          this.http.post(this.enviromentApiUrl + "/Api/login", loginRequest, this.httpOptions).subscribe((resApiLogin: any) => { // Api SignIn
             if (resApiLogin.error == 0) {
-              alert("Success Api SignIn");
+
+              const customerInfo = resApiLogin.customerInfo;
+
+              const saveUIDRequest = new URLSearchParams();
+              saveUIDRequest.set('appToken', resApiLogin.customerInfo.appToken);
+
               this.mainService.fireSignIn({ 'email': this.userEmail, 'password': this.userPassword }).then((fireSignIn: any) => { // Fire SignIn
 
-                const uid = fireSignIn.user.uid
-                const customer_api_uid = resApiLogin.customerInfo.uid;
+                saveUIDRequest.set('uid', fireSignIn.user.uid);
+                saveUIDRequest.toString();
 
-                if (customer_api_uid == "null" || customer_api_uid == null || customer_api_uid == "") { // We have save uid on api
-                  console.log('Empty customer uid');
+                if (customerInfo.uid == "null" || customerInfo.uid == null || customerInfo.uid == "") { // We have save uid on api
 
-                  const apiUrl = this.enviromentApiUrl + "/Api/saveCustomerUid";
-                  const request = new URLSearchParams();
+                  this.http.post(this.enviromentApiUrl + "/Api/saveCustomerUID", saveUIDRequest, this.httpOptions).subscribe((saveCustomerUID: any) => {
 
-                  request.set('appToken', resApiLogin.customerInfo.appToken);
-                  request.set('uid', uid);
-
-                  this.http.post(apiUrl, request.toString(), this.httpOptions).subscribe((saveCustomerUid: any) => {
-                    if (saveCustomerUid.error == 0) {
-                      console.log('Success');
-                    } else {
-                      alert('Error Api saveCustomerUid');
+                    if (saveCustomerUID.error == 0) {
+                      customerInfo.uid = fireSignIn.user.uid;
+                      this.storage.set('customerInfo', customerInfo).then(() => {
+                        loader.dismiss();
+                        this.router.navigate(["dashboard"]);
+                      });
+                    } else { // Error save uid on api
+                      loader.dismiss();
+                      this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
                     }
-                  }, (error) => {
-                    alert('Error Api saveCustomerUid');
+                  }, (error) => { // Error save uid on api
+                    loader.dismiss();
+                    this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
                   });
-
-                } else { // Empty customer uid
-                  /*this.storage.set('customerInfo', resApiLogin.customerInfo).then((res: any) => {
-                    this.router.navigate(['dashboard']);
-                  });*/
+                } else {
+                  this.storage.set('customerInfo', customerInfo).then(() => {
+                    loader.dismiss();
+                    this.router.navigate(["dashboard"]);
+                  });
                 }
               }).catch((error) => { // Error Fire SignIn
-                alert("Error Fire SignIn")
-                if (error.code == "auth/invalid-credential") {
-                  this.mainService.fireSignUp({ 'email': this.userEmail, 'password': this.userPassword }).then((fireSignUp: any) => { // Fire SignUp
-                    alert("Succes Fire SignUp");
+
+                if (error.code == "auth/invalid-credential") { // The user not exist on firebase we have created
+                  this.mainService.fireSignUp({ 'email': this.userEmail, 'password': '123456' }).then((fireSignUp: any) => { // Fire SignUp
+
+                    saveUIDRequest.set('uid', fireSignUp.user.uid);
+                    saveUIDRequest.toString();
+
+                    this.http.post(this.enviromentApiUrl + "/Api/saveCustomerUID", saveUIDRequest, this.httpOptions).subscribe((saveCustomerUid: any) => {
+                      if (saveCustomerUid.error == 0) {
+                        customerInfo.uid = fireSignUp.user.uid;
+                        this.storage.set('customerInfo', customerInfo).then(() => {
+                          loader.dismiss();
+                          this.router.navigate(["dashboard"]);
+                        });
+                      } else { // Error save uid on api
+                        loader.dismiss();
+                        this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
+                      }
+                    }, (error) => { // Error save uid on api
+                      loader.dismiss();
+                      this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
+                    });
                   }).catch((error) => { // Error Fire SignUp
-                    alert("Error Fire SignUp");
-                    if (error.code == "auth/weak-password") {
-                      this.alert.header = String(introAtention);
-                      this.alert.message = String(firePassMsg);
-                      this.showHideAlert(true);
-                    }
+                    loader.dismiss();
+                    this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
                   });
                 }
               });
-            } else if (resApiLogin.error === 1) {
-              if (resApiLogin.msg === 'EMAIL_NOT_FOUND') {
+            } else { // Error Api SignIn
+              if (resApiLogin.msg === 'EMAIL_NOT_FOUND')
                 document.getElementById('txt-email')?.classList.add('is-invalid');
-              } else if (resApiLogin.msg === 'INVALID_PASSWORD') {
+              else if (resApiLogin.msg === 'INVALID_PASSWORD')
                 document.getElementById('txt-password')?.classList.add('is-invalid');
-              }
+              loader.dismiss();
             }
-          }, (error) => {
-            alert('Error Api Auth');
+          }, (error) => { // Error Api SignIn
+            loader.dismiss();
+            this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
           });
-        } else { // Error network
-          this.alert.header = String(introAtention);
-          this.alert.message = String(not_network_msg);
-          this.showHideAlert(true);
-        }
-      } else { // Error empty enviromentApiUrl
+        } else // Error network
+          this.mainService.showAlert(String(this.introAtention), String(this.not_network_msg), String(this.introOk));
+      } else // Error empty enviromentApiUrl
         this.router.navigate(["intro"]);
-      }
-    } else {
-      this.alert.header = String(introAtention);
-      this.alert.message = String(introRequiredFields);
-      this.showHideAlert(true);
-    }
+    } else // Error required fields
+      this.mainService.showAlert(String(this.introAtention), String(this.introRequiredFields), String(this.introOk));
   }
 
   async requiredValues() {
@@ -233,5 +222,29 @@ export class AuthenticationPage implements OnInit {
   showHideAlert(showHide: boolean) {
     console.log(showHide);
     this.isAlertOpen = showHide;
+  }
+
+  useText() {
+    this.translate.get('intro.atention').subscribe((res: string) => {
+      this.introAtention = res;
+    });
+    this.translate.get('intro.required_fields').subscribe((res: string) => {
+      this.introRequiredFields = res;
+    });
+    this.translate.get('intro.ok').subscribe((res: string) => {
+      this.introOk = res;
+    });
+    this.translate.get('intro.invalid_url').subscribe((res: any) => {
+      this.introInvalidURL = res;
+    });
+    this.translate.get('global.not_network_msg').subscribe((res: any) => {
+      this.not_network_msg = res;
+    });
+    this.translate.get('global.firePassMsg').subscribe((res: any) => {
+      this.firePassMsg = res;
+    });
+    this.translate.get('global.error_msg').subscribe((res: any) => {
+      this.error_msg = res;
+    });
   }
 }

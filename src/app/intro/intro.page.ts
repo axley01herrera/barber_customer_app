@@ -121,7 +121,7 @@ export class IntroPage implements OnInit {
           this.mainService.showAlert(String(this.introAtention), String(this.introInvalidURL), String(this.introOk));
         });
       } else { // Error network
-        this.mainService.showAlert(String(this.introAtention), String(this.not_network_msg), String(this.introOk))
+        this.mainService.showAlert(String(this.introAtention), String(this.not_network_msg), String(this.introOk));
       }
     }
   }

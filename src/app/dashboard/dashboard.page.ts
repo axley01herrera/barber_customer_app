@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
-import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,24 +11,38 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
+
   enviromentApiUrl: string = '';
   platform: string = '';
-  isSupported: boolean = false;
   lang: string = 'es';
-  customerInfo: any = {};
-  upcomingAppointments: any = {};
+  customerInfo: any;
+  upcomingAppointments: any = [];
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    }),
+  };
+
+  introAtention: String = '';
+  introOk: String = '';
+  not_network_msg: String = '';
+  error_msg: String = "";
 
   constructor(
     private storage: Storage,
     private translate: TranslateService,
     private mainService: MainServiceService,
     private http: HttpClient,
-    private alertController: AlertController,
     private router: Router
-  ) {
+  ) { }
+
+  ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
+  }
 
+  ionViewWillEnter() {
     this.mainService.getStorageLang().then((storageLang: any) => {
       if (storageLang == null) {
         this.mainService.deviceLang().then((deviceLang: any) => {
@@ -39,6 +52,7 @@ export class DashboardPage implements OnInit {
       } else this.lang = storageLang;
 
       this.translate.use(this.lang);
+      this.useText();
     });
 
     this.mainService.getStorageEnviromentApiUrl().then((url: any) => {
@@ -48,67 +62,49 @@ export class DashboardPage implements OnInit {
     });
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
-      this.customerInfo = customerInfo;
-      this.getUpcomingAppointments(customerInfo.id);
+      this.customerInfo = customerInfo; console.log(this.customerInfo)
+      this.getUpcomingAppointments();
     });
   }
 
-  ngOnInit() {}
-
-  async getUpcomingAppointments(customerID: any) {
-    let introAtention: String = '';
-    let introOk: String = '';
-    let not_network_msg: String = '';
-
-    await this.translate.get('intro.atention').subscribe((res: string) => {
-      introAtention = res;
-    });
-
-    await this.translate.get('intro.ok').subscribe((res: string) => {
-      introOk = res;
-    });
-
-    await this.translate.get('global.not_network_msg').subscribe((res: any) => {
-      not_network_msg = res;
-    });
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }),
-    };
-
+  async getUpcomingAppointments() {
     const networkStatus = await this.mainService.getNetworkStatus();
-
     if (networkStatus) {
-      const apiUrl =
-        this.enviromentApiUrl + 'Api/getCustomerUpcomingAppointments';
+      const loader = await this.mainService.loader();
+      loader.present();
       const request = new URLSearchParams();
-      request.set('customerID', customerID);
-      await this.http.post(apiUrl, request.toString(), httpOptions).subscribe(
-        (resApi: any) => {
-          // Fetch Api
-          if (resApi) {
-            this.upcomingAppointments = resApi.upcomingAppointments;
-            console.log(this.upcomingAppointments);
-          }
-        },
-        (error) => {
-          alert('An error has ocurred');
+      request.set('customerID', this.customerInfo.id);
+      request.set('appToken', this.customerInfo.appToken);
+      request.toString();
+      this.http.post(this.enviromentApiUrl + 'Api/getCustomerUpcomingAppointments', request, this.httpOptions).subscribe((resApi: any) => {
+        if (resApi.upcomingAppointments.length > 0) {
+          this.upcomingAppointments = resApi.upcomingAppointments;
         }
-      );
-    } else {
-      // Error network
-      const alert = await this.alertController.create({
-        header: String(introAtention),
-        message: String(not_network_msg),
-        buttons: [String(introOk)],
+        loader.dismiss();
+      }, (error) => {
+        this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
+        loader.dismiss();
       });
-      await alert.present();
-    }
+    } else // Error Network
+      this.mainService.showAlert(String(this.introAtention), String(this.not_network_msg), String(this.introOk));
   };
 
-   cancelAppointment(appointmentID: any) {
-    console.log(appointmentID);
-  };
+  useText() {
+    this.translate.get('intro.atention').subscribe((res: string) => {
+      this.introAtention = res;
+    });
+    this.translate.get('intro.ok').subscribe((res: string) => {
+      this.introOk = res;
+    });
+    this.translate.get('global.not_network_msg').subscribe((res: any) => {
+      this.not_network_msg = res;
+    });
+    this.translate.get('global.error_msg').subscribe((res: any) => {
+      this.error_msg = res;
+    });
+  }
+
+  async cancelAppointment (appointmentID: any) {
+    console.log('appointmentID', appointmentID);
+  }
 }

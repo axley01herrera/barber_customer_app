@@ -1,5 +1,6 @@
 {
   "global": {
+    "error_msg": "Ha ocurrido un error",
     "email": "Email",
     "pass": "Contraseña",
     "btn_login": "Entrar",
