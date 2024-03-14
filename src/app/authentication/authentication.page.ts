@@ -122,7 +122,7 @@ export class AuthenticationPage implements OnInit {
               const saveUIDRequest = new URLSearchParams();
               saveUIDRequest.set('appToken', resApiLogin.customerInfo.appToken);
 
-              this.mainService.fireSignIn({ 'email': this.userEmail, 'password': this.userPassword }).then((fireSignIn: any) => { // Fire SignIn
+              this.mainService.fireSignIn({ 'email': this.userEmail, 'password': '123456' }).then((fireSignIn: any) => { // Fire SignIn
 
                 saveUIDRequest.set('uid', fireSignIn.user.uid);
                 saveUIDRequest.toString();
