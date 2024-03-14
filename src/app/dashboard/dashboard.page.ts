@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
 import { AlertController } from '@ionic/angular';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,11 +12,10 @@ import { Router } from "@angular/router";
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-
-  enviromentApiUrl: string = "";
-  platform: string = "";
+  enviromentApiUrl: string = '';
+  platform: string = '';
   isSupported: boolean = false;
-  lang: string = "es";
+  lang: string = 'es';
   customerInfo: any = {};
   upcomingAppointments: any = {};
 
@@ -26,9 +25,8 @@ export class DashboardPage implements OnInit {
     private mainService: MainServiceService,
     private http: HttpClient,
     private alertController: AlertController,
-    private router: Router,
+    private router: Router
   ) {
-
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
 
@@ -37,9 +35,8 @@ export class DashboardPage implements OnInit {
         this.mainService.deviceLang().then((deviceLang: any) => {
           this.lang = deviceLang.value;
           this.storage.set('appLang', this.lang);
-        })
-      } else
-        this.lang = storageLang;
+        });
+      } else this.lang = storageLang;
 
       this.translate.use(this.lang);
     });
@@ -47,8 +44,7 @@ export class DashboardPage implements OnInit {
     this.mainService.getStorageEnviromentApiUrl().then((url: any) => {
       if (url != null) {
         this.enviromentApiUrl = url;
-      } else
-        this.router.navigate(["intro"]);
+      } else this.router.navigate(['intro']);
     });
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
@@ -56,14 +52,13 @@ export class DashboardPage implements OnInit {
       this.getUpcomingAppointments(customerInfo.id);
     });
   }
-  ngOnInit() {
-  }
+
+  ngOnInit() {}
 
   async getUpcomingAppointments(customerID: any) {
-
-    let introAtention: String = "";
-    let introOk: String = "";
-    let not_network_msg: String = "";
+    let introAtention: String = '';
+    let introOk: String = '';
+    let not_network_msg: String = '';
 
     await this.translate.get('intro.atention').subscribe((res: string) => {
       introAtention = res;
@@ -79,25 +74,31 @@ export class DashboardPage implements OnInit {
 
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded'
-      })
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
     };
 
     const networkStatus = await this.mainService.getNetworkStatus();
 
     if (networkStatus) {
-      const apiUrl = this.enviromentApiUrl + "Api/getCustomerUpcomingAppointments";
+      const apiUrl =
+        this.enviromentApiUrl + 'Api/getCustomerUpcomingAppointments';
       const request = new URLSearchParams();
       request.set('customerID', customerID);
-      await this.http.post(apiUrl, request.toString(), httpOptions).subscribe((resApi: any) => { // Fetch Api
-        if(resApi) {
-          this.upcomingAppointments = resApi.upcomingAppointments;
-          console.log(this.upcomingAppointments);
+      await this.http.post(apiUrl, request.toString(), httpOptions).subscribe(
+        (resApi: any) => {
+          // Fetch Api
+          if (resApi) {
+            this.upcomingAppointments = resApi.upcomingAppointments;
+            console.log(this.upcomingAppointments);
+          }
+        },
+        (error) => {
+          alert('An error has ocurred');
         }
-      }, (error) => {
-        alert('An error has ocurred');
-      });
-    } else { // Error network
+      );
+    } else {
+      // Error network
       const alert = await this.alertController.create({
         header: String(introAtention),
         message: String(not_network_msg),
@@ -105,8 +106,9 @@ export class DashboardPage implements OnInit {
       });
       await alert.present();
     }
-  }
+  };
 
-
-
+   cancelAppointment(appointmentID: any) {
+    console.log(appointmentID);
+  };
 }
