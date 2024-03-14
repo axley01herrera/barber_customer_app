@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Barcode, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
-import { AlertController } from '@ionic/angular';
+
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage-angular';
 import { Router } from "@angular/router";
@@ -21,10 +21,15 @@ export class IntroPage implements OnInit {
   lang: string = "es";
   url: string = "";
 
+  introAtention: String = "";
+  introRequiredFields: String = "";
+  introOk: String = "";
+  introInvalidURL: String = "";
+  not_network_msg: String = "";
+
   constructor(
     private http: HttpClient,
     private mainService: MainServiceService,
-    private alertController: AlertController,
     private storage: Storage,
     private translate: TranslateService,
     private router: Router,
@@ -33,7 +38,6 @@ export class IntroPage implements OnInit {
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
-
     this.mainService.deviceInfo().then((device: any) => {
       this.platform = device.platform;
       if (this.platform == 'android' || this.platform == 'ios') {
@@ -55,6 +59,7 @@ export class IntroPage implements OnInit {
         this.lang = storageLang;
 
       this.translate.use(this.lang);
+      this.useText();
     });
 
     this.mainService.getStorageEnviromentApiUrl().then((url: any) => {
@@ -72,7 +77,6 @@ export class IntroPage implements OnInit {
 
     const { barcodes } = await BarcodeScanner.scan();
     this.barcodes.push(...barcodes);
-
   }
 
   async requestPermissions(): Promise<boolean> {
@@ -82,42 +86,16 @@ export class IntroPage implements OnInit {
 
   async next() {
     const txtUrl = document.getElementById('txt-url');
-
-    let introAtention: String = "";
-    let introRequiredFields: String = "";
-    let introOk: String = "";
-    let introInvalidURL: String = "";
-    let not_network_msg: String = "";
-
-    await this.translate.get('intro.atention').subscribe((res: string) => {
-      introAtention = res;
-    });
-    await this.translate.get('intro.required_fields').subscribe((res: string) => {
-      introRequiredFields = res;
-    });
-    await this.translate.get('intro.ok').subscribe((res: string) => {
-      introOk = res;
-    });
-    await this.translate.get('intro.invalid_url').subscribe((res: any) => {
-      introInvalidURL = res;
-    });
-    await this.translate.get('global.not_network_msg').subscribe((res: any) => {
-      not_network_msg = res;
-    });
-
     if (this.url == "") {
       txtUrl?.classList.add('is-invalid');
-      const alert = await this.alertController.create({
-        header: String(introAtention),
-        message: String(introRequiredFields),
-        buttons: [String(introOk)],
-      });
-      await alert.present();
+      this.mainService.showAlert(String(this.introAtention), String(this.introRequiredFields), String(this.introOk))
     } else {
       const apiUrl = this.url + "/Api/index";
       const networkStatus = await this.mainService.getNetworkStatus();
       if (networkStatus) {
-        await this.http.post(apiUrl, '').subscribe((resApiIndex: any) => {
+        const loader = await this.mainService.loader();
+        await loader.present();
+        this.http.post(apiUrl, '').subscribe((resApiIndex: any) => {
           if (resApiIndex.error == 0) {
             let companyInfo = {
               'name': resApiIndex.companyName,
@@ -128,35 +106,24 @@ export class IntroPage implements OnInit {
             }
             this.storage.set('enviromentApiUrl', this.url).then((res: any) => {
               this.storage.set('companyInfo', companyInfo).then((res: any) => {
+                loader.dismiss();
                 this.router.navigate(["authentication"]);
               })
             })
           } else { // Error Not Found Enviroment
+            loader.dismiss();
             txtUrl?.classList.add('is-invalid');
-            this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
+            this.mainService.showAlert(String(this.introAtention), String(this.introInvalidURL), String(this.introOk));
           }
         }, (error) => { // Error Not Found Enviroment
+          loader.dismiss();
           txtUrl?.classList.add('is-invalid');
-          this.showAlert(String(introAtention), String(introInvalidURL), String(introOk));
+          this.mainService.showAlert(String(this.introAtention), String(this.introInvalidURL), String(this.introOk));
         });
       } else { // Error network
-        const alert = await this.alertController.create({
-          header: String(introAtention),
-          message: String(not_network_msg),
-          buttons: [String(introOk)],
-        });
-        await alert.present();
+        this.mainService.showAlert(String(this.introAtention), String(this.not_network_msg), String(this.introOk))
       }
-
     }
-  }
-
-  getTranslate(key: string) {
-    const text = this.translate.get(key).subscribe((res: string) => {
-      return res;
-    })
-
-    return text;
   }
 
   async setLang(lang: string) {
@@ -174,13 +141,21 @@ export class IntroPage implements OnInit {
     txtUrl?.classList.remove('is-invalid')
   }
 
-  async showAlert(headerText: String, messageText: String, buttonText: String) {
-    const alert = await this.alertController.create({
-      header: String(headerText),
-      message: String(messageText),
-      buttons: [String(buttonText)],
+  async useText() {
+    this.translate.get('intro.atention').subscribe((res: string) => {
+      this.introAtention = res;
     });
-    await alert.present();
+    this.translate.get('intro.required_fields').subscribe((res: string) => {
+      this.introRequiredFields = res;
+    });
+    this.translate.get('intro.ok').subscribe((res: string) => {
+      this.introOk = res;
+    });
+    this.translate.get('intro.invalid_url').subscribe((res: any) => {
+      this.introInvalidURL = res;
+    });
+    this.translate.get('global.not_network_msg').subscribe((res: any) => {
+      this.not_network_msg = res;
+    });
   }
-
 }

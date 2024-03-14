@@ -132,7 +132,6 @@ export class AuthenticationPage implements OnInit {
       if (this.enviromentApiUrl != "") { // Check Enviroent Url
         const networkStatus = await this.mainService.getNetworkStatus();
         if (networkStatus) { // Check Network Status
-
           const apiUrl = this.enviromentApiUrl + "/Api/login";
           const request = new URLSearchParams();
 
@@ -175,7 +174,7 @@ export class AuthenticationPage implements OnInit {
                 alert("Error Fire SignIn")
                 if (error.code == "auth/invalid-credential") {
                   this.mainService.fireSignUp({ 'email': this.userEmail, 'password': this.userPassword }).then((fireSignUp: any) => { // Fire SignUp
-                    alert("Error Fire SignUp");
+                    alert("Succes Fire SignUp");
                   }).catch((error) => { // Error Fire SignUp
                     alert("Error Fire SignUp");
                     if (error.code == "auth/weak-password") {
@@ -234,14 +233,5 @@ export class AuthenticationPage implements OnInit {
   showHideAlert(showHide: boolean) {
     console.log(showHide);
     this.isAlertOpen = showHide;
-  }
-
-  saveCustomerUid(customerInfo: any, uid: any) {
-
-    let result: any;
-
-
-
-    return result;
   }
 }

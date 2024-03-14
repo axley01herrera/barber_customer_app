@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Network } from '@capacitor/network';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from '@angular/fire/auth';
 import { LoadingController } from '@ionic/angular';
-
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,7 @@ export class MainServiceService {
     private storage: Storage,
     private auth: Auth,
     private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) {
     this.storage.create();
   }
@@ -89,9 +90,17 @@ export class MainServiceService {
 
   /* Loader */
   loader() {
-    return this.loadingCtrl.create()
+    return this.loadingCtrl.create();
   }
 
-
+  /* Alert */
+  async showAlert(headerText: String, messageText: String, buttonText: String) {
+    const alert = await this.alertCtrl.create({
+      header: String(headerText),
+      message: String(messageText),
+      buttons: [String(buttonText)],
+    });
+    await alert.present();
+  }
 
 }
