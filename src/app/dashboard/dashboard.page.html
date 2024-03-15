@@ -9,9 +9,8 @@
 <ion-content>
 
     <!-- Button Create  -->
-    <div class="text-end me-2 mt-2 mb-2">
-      <button class="btn btn-primary btn-lg border-0" style="background-color: #009abe">
-        <ion-icon name="calendar-outline"></ion-icon>
+    <div class="text-end ms-2 me-2 mt-2 mb-2">
+      <button class="btn btn-primary btn-lg border-0  w-100" style="background-color: #009abe">
         {{'global.btn_create_appointment' | translate }}
       </button>
     </div>
@@ -25,7 +24,8 @@
 
               <!-- DateTime -->
               <span class="text-white me-1 pb-1" style="font-size: 15px">
-                {{ appointment.date }} {{ appointment.time}}
+                {{ appointment.date }}
+                <br><span style="font-size: 10px;"><ion-icon name="time-outline"></ion-icon> {{ appointment.time}}</span>
               </span>
 
               <!-- Services -->
@@ -41,11 +41,11 @@
               <div class="d-flex align-items-center flex-wrap d-grid gap-2">
                 <div class="d-flex align-items-center me-5 me-xl-13">
                   <div class="symbol symbol-30px symbol-circle me-3">
-                    <img src="{{ appointment.empAvatar }}" width="50px" style="border-radius: 50%" />
+                    <img src="{{ appointment.empAvatar }}" width="40px" style="border-radius: 50%" />
                   </div>
                   <div class="m-0">
-                    <span class="text-white d-block" style="font-size: 15px"> {{ 'global.emp' | translate}}</span>
-                    <span class="text-white" style="font-size: 15px">
+                    <span class="text-white d-block" style="font-size: 12px"> {{ 'global.emp' | translate}}</span>
+                    <span class="text-white" style="font-size: 12px">
                       {{ appointment.empInfo }}
                     </span>
                   </div>
@@ -57,10 +57,10 @@
                     </div>
                   </div>
                   <div class="m-0">
-                    <span class="text-white d-block" style="font-size: 15px">
+                    <span class="text-white d-block" style="font-size: 12px">
                       {{ 'global.price' | translate }}
                     </span>
-                    <span class="text-white" style="font-size: 15px">
+                    <span class="text-white" style="font-size: 12px">
                       {{ appointment.price }}
                     </span>
                   </div>
