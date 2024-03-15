@@ -23,6 +23,9 @@
     "ok": "Entendido",
     "invalid_url": "Rectifique su URL"
   },
+  "dashboard": {
+    "app_deleted_msg": "Cita eliminada"
+  },
   "tabPanel": {
     "home": "Inicio",
     "appointment": "Citas",

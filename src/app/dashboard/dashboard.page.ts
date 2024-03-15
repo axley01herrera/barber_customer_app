@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-
   enviromentApiUrl: string = '';
   platform: string = '';
   lang: string = 'es';
@@ -27,7 +26,8 @@ export class DashboardPage implements OnInit {
   introAtention: String = '';
   introOk: String = '';
   not_network_msg: String = '';
-  error_msg: String = "";
+  error_msg: String = '';
+  app_deleted_msg: String = '';
 
   constructor(
     private storage: Storage,
@@ -35,7 +35,7 @@ export class DashboardPage implements OnInit {
     private mainService: MainServiceService,
     private http: HttpClient,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
@@ -62,7 +62,8 @@ export class DashboardPage implements OnInit {
     });
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
-      this.customerInfo = customerInfo; console.log(this.customerInfo)
+      this.customerInfo = customerInfo;
+      console.log(this.customerInfo);
       this.getUpcomingAppointments();
     });
   }
@@ -76,18 +77,36 @@ export class DashboardPage implements OnInit {
       request.set('customerID', this.customerInfo.id);
       request.set('appToken', this.customerInfo.appToken);
       request.toString();
-      this.http.post(this.enviromentApiUrl + 'Api/getCustomerUpcomingAppointments', request, this.httpOptions).subscribe((resApi: any) => {
-        if (resApi.upcomingAppointments.length > 0) {
-          this.upcomingAppointments = resApi.upcomingAppointments;
-        }
-        loader.dismiss();
-      }, (error) => {
-        this.mainService.showAlert(String(this.introAtention), String(this.error_msg), String(this.introOk));
-        loader.dismiss();
-      });
-    } else // Error Network
-      this.mainService.showAlert(String(this.introAtention), String(this.not_network_msg), String(this.introOk));
-  };
+      this.http
+        .post(
+          this.enviromentApiUrl + 'Api/getCustomerUpcomingAppointments',
+          request,
+          this.httpOptions
+        )
+        .subscribe(
+          (resApi: any) => {
+            if (resApi.upcomingAppointments.length > 0) {
+              this.upcomingAppointments = resApi.upcomingAppointments;
+            }
+            loader.dismiss();
+          },
+          (error) => {
+            this.mainService.showAlert(
+              String(this.introAtention),
+              String(this.error_msg),
+              String(this.introOk)
+            );
+            loader.dismiss();
+          }
+        );
+    } // Error Network
+    else
+      this.mainService.showAlert(
+        String(this.introAtention),
+        String(this.not_network_msg),
+        String(this.introOk)
+      );
+  }
 
   useText() {
     this.translate.get('intro.atention').subscribe((res: string) => {
@@ -102,9 +121,55 @@ export class DashboardPage implements OnInit {
     this.translate.get('global.error_msg').subscribe((res: any) => {
       this.error_msg = res;
     });
+    this.translate.get('dashboard.app_deleted_msg').subscribe((res: any) => {
+      this.app_deleted_msg = res;
+    });
   }
 
-  async cancelAppointment (appointmentID: any) {
-    console.log('appointmentID', appointmentID);
+  async cancelAppointment(appID: any) {
+    const request = new URLSearchParams();
+    request.set('appointmentID', appID);
+    request.toString();
+    console.log(request);
+
+    const loader = await this.mainService.loader();
+    await loader.present();
+
+    this.http
+      .post(
+        this.enviromentApiUrl + 'Api/deleteAppointment',
+        request,
+        this.httpOptions
+      )
+      .subscribe(
+        (response: any) => {
+          if (response.error == 0) {
+            this.mainService.showAlert(
+              String(this.introAtention),
+              String(this.app_deleted_msg),
+              String(this.introOk)
+            );
+            loader.dismiss();
+            this.getUpcomingAppointments();
+          } else {
+            // Error deleted
+            loader.dismiss();
+            this.mainService.showAlert(
+              String(this.introAtention),
+              String(this.error_msg),
+              String(this.introOk)
+            );
+          }
+        },
+        (error) => {
+          // Error deleted
+          loader.dismiss();
+          this.mainService.showAlert(
+            String(this.introAtention),
+            String(this.error_msg),
+            String(this.introOk)
+          );
+        }
+      );
   }
 }

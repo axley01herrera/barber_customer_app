@@ -23,6 +23,9 @@
     "ok": "Got It",
     "invalid_url": "Please correct your URL"
   },
+  "dashboard": {
+    "app_deleted_msg": "Appointment deleted"
+  },
   "tabPanel": {
     "home": "Home",
     "appointment": "Appointments",

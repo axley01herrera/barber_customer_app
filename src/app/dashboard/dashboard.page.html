@@ -1,14 +1,24 @@
 <ion-header>
   <ion-toolbar color="dark">
-    <img class="ms-2" src="assets/img/logo.png" alt="logo" width="150px" height="30px">
+    <img
+      class="ms-2"
+      src="assets/img/logo.png"
+      alt="logo"
+      width="150px"
+      height="30px"
+    />
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <!-- Button Create  -->
   <div class="text-end me-2 mt-2 mb-2">
-    <button class="btn btn-primary btn-lg border-0" style="background-color: #009abe">
-      <ion-icon name="calendar-outline"></ion-icon> {{'global.btn_create_appointment' | translate }}
+    <button
+      class="btn btn-primary btn-lg border-0"
+      style="background-color: #009abe"
+    >
+      <ion-icon name="calendar-outline"></ion-icon>
+      {{'global.btn_create_appointment' | translate }}
     </button>
   </div>
 
@@ -23,35 +33,54 @@
             <span class="text-gray-800 fs-7 me-1 pb-1">
               {{ appointment.date }}
             </span>
-            <span class="text-gray-800 me-1 pb-1" style="font-size: 15px;">
+            <span class="text-gray-800 me-1 pb-1" style="font-size: 15px">
               {{ appointment.time}}
             </span>
 
             <div class="mt-2 mb-3 scroll-container">
               <div *ngFor="let services of appointment.services">
                 <div class="m-0">
-                  <span style="font-size: 10px;">{{services.title }}</span>
+                  <span style="font-size: 13px">{{services.title }}</span>
                 </div>
               </div>
             </div>
-
-            <div class="row">
-              <div class="col-6">
-                <img src="data:image/png;base64,{{ appointment.empAvatar }}" alt="Employee Avatar" width="25px" style="border-radius: 50%" />
-                <span class="ms-2" style="font-size: 15px;">
-                  {{ appointment.empInfo[0].name }}
-                </span>
+            <div class="d-flex align-items-center flex-wrap d-grid gap-2">
+              <div class="d-flex align-items-center me-5 me-xl-13">
+                <div class="symbol symbol-30px symbol-circle me-3">
+                  <img
+                    src="{{ appointment.empAvatar }}"
+                    width="50px"
+                    style="border-radius: 50%"
+                  />
+                </div>
+                <div class="m-0">
+                  <span class="text-gray-400 d-block fs-8" style="font-size: 15px"> {{ 'global.emp' | translate }}</span>
+                  <span class="text-gray-800 fs-7" style="font-size: 15px">
+                    {{ appointment.empInfo }}
+                  </span>
+                </div>
               </div>
-              <div class="col-6">
-                <span style="font-size: 15px;">
-                  {{ 'global.price' | translate }}
-                </span>
-                <span style="font-size: 15px;">
-                  {{ appointment.price }}
-                </span>
+              <div class="d-flex align-items-center">
+                <div class="symbol symbol-30px symbol-circle me-3">
+                  <span class="symbol-label">
+                    <ion-icon name="cash-outline" color="success"></ion-icon>
+                  </span>
+                </div>
+                <div class="m-0">
+                  <span class="text-gray-400 d-block fs-8" style="font-size: 15px">
+                    {{ 'global.price' | translate }}
+                  </span>
+                  <span class="text-gray-800 fs-7" style="font-size: 15px">
+                    {{ appointment.price }}
+                  </span>
+                </div>
               </div>
             </div>
-            <button class="mt-3 btn btn-danger btn-sm w-100" (click)="cancelAppointment(appointment.appointmentID)">{{'global.btn_cancel' | translate }}</button>
+            <button
+              class="mt-3 btn btn-danger btn-sm w-100"
+              (click)="cancelAppointment(appointment.appointmentID)">
+              {{'global.btn_cancel' | translate }}
+            </button>
           </div>
         </div>
       </div>
