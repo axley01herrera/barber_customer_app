@@ -12,10 +12,10 @@ import { Router } from '@angular/router';
 })
 export class DashboardPage implements OnInit {
   enviromentApiUrl: string = '';
-  platform: string = '';
   lang: string = 'es';
   customerInfo: any;
   upcomingAppointments: any = [];
+  companyInfo: any = {};
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -40,6 +40,10 @@ export class DashboardPage implements OnInit {
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
+    this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
+      if (companyInfo != null)
+        this.companyInfo = companyInfo;
+    });
   }
 
   ionViewWillEnter() {
@@ -63,8 +67,8 @@ export class DashboardPage implements OnInit {
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
       this.customerInfo = customerInfo;
-      console.log(this.customerInfo);
       this.getUpcomingAppointments();
+      console.log(this.customerInfo);
     });
   }
 

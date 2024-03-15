@@ -1,8 +1,30 @@
+<!-- Header -->
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Citas</ion-title>
+  <ion-toolbar color="dark">
+    <img class="ms-2 me-2" src="data:image/png;base64,{{ companyInfo.avatar }}" alt="logo" width="30px" height="30px" />
+    <ion-title>{{ 'tabPanel.appointment' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
-  <div class="example-content"></div>
+  <!-- Button Create  -->
+  <div class="text-end me-2 mt-2 mb-2">
+    <button class="btn btn-primary btn-lg border-0" style="background-color: #009abe">
+      <ion-icon name="calendar-outline"></ion-icon>
+      {{'global.btn_create_appointment' | translate }}
+    </button>
+  </div>
 </ion-content>
+
+<!-- Tabs Footer -->
+<ion-tab-bar slot="bottom" color="dark">
+  <ion-tab-button routerLink="/dashboard">
+    <ion-icon name="home-outline"></ion-icon>
+  </ion-tab-button>
+  <ion-tab-button>
+    <ion-icon name="calendar-outline" color="primary"></ion-icon>
+  </ion-tab-button>
+  <ion-tab-button routerLink="/account">
+    <ion-icon name="person-circle-outline"></ion-icon>
+  </ion-tab-button>
+</ion-tab-bar>

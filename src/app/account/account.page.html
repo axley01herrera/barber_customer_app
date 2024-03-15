@@ -1,8 +1,45 @@
+<!-- Header -->
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Cuenta</ion-title>
+  <ion-toolbar color="dark">
+    <img class="ms-2 me-2" src="data:image/png;base64,{{ companyInfo.avatar }}" alt="logo" width="30px" height="30px" />
+    <ion-title>{{ 'tabPanel.account' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
+
 <ion-content>
-  <div class="example-content"></div>
+  <div class="card mt-2 ms-2 me-2">
+    <div class="card-body">
+      <div class="row mt-2">
+        <div class="col-4">
+          <img style="border-radius: 3%;" src="data:image/png;base64,{{ customerInfo.avatar }}" alt="Customer Avatar" width="100px"  />
+        </div>
+        <div class="col-8">
+          <p class="fw-bold" style="font-size: 12px;">{{ customerInfo.name }} {{ customerInfo.lastName }}</p>
+          <p style="font-size: 12px;"><ion-icon name="mail-outline"></ion-icon> {{ customerInfo.email }}</p>
+          <p style="font-size: 12px;"><ion-icon name="call-outline"></ion-icon> {{ customerInfo.phone }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Button Create  -->
+  <div class="ms-2 me-2 mt-2 mb-2 text-center">
+    <button class="btn btn-danger btn-lg w-100" style="background-color: #BA372F;" (click)="logout()">
+      {{'global.logout' | translate }}
+    </button>
+  </div>
+
+
+
 </ion-content>
+
+<ion-tab-bar slot="bottom" color="dark">
+  <ion-tab-button routerLink="/dashboard">
+    <ion-icon name="home-outline"></ion-icon>
+  </ion-tab-button>
+  <ion-tab-button routerLink="/appointment">
+    <ion-icon name="calendar-outline"></ion-icon>
+  </ion-tab-button>
+  <ion-tab-button tab="account">
+    <ion-icon name="person-circle-outline" color="primary"></ion-icon>
+  </ion-tab-button>
+</ion-tab-bar>

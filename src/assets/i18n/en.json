@@ -1,5 +1,7 @@
 {
   "global": {
+    "back": "Back",
+    "logout": "Logout",
     "error_msg": "An error has ocurred",
     "email": "Email",
     "pass": "Password",

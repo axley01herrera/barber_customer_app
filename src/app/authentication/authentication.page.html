@@ -2,7 +2,10 @@
   <div class="auth-container">
     <div class="card" style="width: 90%;">
       <div class="card-body">
+        <div class="text-end">
 
+          <ion-icon name="arrow-back-circle-outline" size="large" color="primary" (click)="logout()"></ion-icon>
+        </div>
         <!-- Logo -->
         <div class="row">
           <div class="col-12 text-center">
@@ -13,8 +16,7 @@
         <!-- Ath msg -->
         <div class="row">
           <div class="col-12 text-center">
-            <h5 class="fs-5"><span style="color: #009abe;">{{ companyInfo.type }}, </span><span class="text-warning">{{
-                companyInfo.name }}</span> </h5>
+            <h5 class="fs-5"><span>{{ companyInfo.type }} </span><span>{{companyInfo.name }}</span> </h5>
           </div>
         </div>
 

@@ -1,5 +1,7 @@
 {
   "global": {
+    "back": "Atrás",
+    "logout": "Cerrar Sesión",
     "error_msg": "Ha ocurrido un error",
     "email": "Email",
     "pass": "Contraseña",

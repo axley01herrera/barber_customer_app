@@ -247,4 +247,10 @@ export class AuthenticationPage implements OnInit {
       this.error_msg = res;
     });
   }
+
+  async logout() {
+    this.storage.clear().then(() => {
+      this.router.navigate(["intro"]);
+    })
+  }
 }
