@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
 import { Router } from '@angular/router';
-import { InfiniteScrollCustomEvent,NavController  } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -39,13 +39,13 @@ export class DashboardPage implements OnInit {
     private http: HttpClient,
     private router: Router,
     private navCtrl: NavController
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
     this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
-      if (companyInfo != null) this.companyInfo = companyInfo;
+      this.companyInfo = companyInfo;
     });
   }
 
@@ -95,11 +95,11 @@ export class DashboardPage implements OnInit {
           (resApi: any) => {
             if (this.upcomingAppointments.length > 0) {
               this.upcomingAppointments = resApi.upcomingAppointments;
-              
+
               this.offset = this.offset + this.upcomingAppointments.length;
 
-              console.log('appReturn '+ resApi.upcomingAppointments.length);
-              console.log('appTotal '+ this.upcomingAppointments.length);
+              console.log('appReturn ' + resApi.upcomingAppointments.length);
+              console.log('appTotal ' + this.upcomingAppointments.length);
               console.log('newOffset = ' + this.offset);
               console.log('Verify 5');
             }
@@ -107,8 +107,8 @@ export class DashboardPage implements OnInit {
               this.upcomingAppointments = resApi.upcomingAppointments;
               this.offset = this.upcomingAppointments.length;
 
-              console.log('appReturn '+ resApi.upcomingAppointments.length);
-              console.log('appTotal '+ this.upcomingAppointments.length);
+              console.log('appReturn ' + resApi.upcomingAppointments.length);
+              console.log('appTotal ' + this.upcomingAppointments.length);
               console.log('newOffset = ' + this.offset);
               console.log('Verify 0');
             }
@@ -123,13 +123,13 @@ export class DashboardPage implements OnInit {
             loader.dismiss();
           }
         );
-    } // Error Network
-    else
+    } else { // Error Network
       this.mainService.showAlert(
         String(this.introAtention),
         String(this.not_network_msg),
         String(this.introOk)
       );
+    }
   }
 
   useText() {

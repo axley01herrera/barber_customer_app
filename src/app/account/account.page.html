@@ -11,12 +11,18 @@
     <div class="card-body">
       <div class="row mt-2">
         <div class="col-4">
-          <img style="border-radius: 3%;" src="data:image/png;base64,{{ customerInfo.avatar }}" alt="" width="100px"  />
+          @if (customerInfo.avatar == "") {
+          <img style="border-radius: 3%;" src="../../assets/img/blank.png" alt="" width="100px" />
+          } @else {
+          <img style="border-radius: 3%;" src="data:image/png;base64,{{ customerInfo.avatar }}" alt="" width="100px" />
+          }
         </div>
         <div class="col-8">
           <p class="fw-bold" style="font-size: 12px;">{{ customerInfo.name }} {{ customerInfo.lastName }}</p>
           <p style="font-size: 12px;"><ion-icon name="mail-outline"></ion-icon> {{ customerInfo.email }}</p>
-          <p style="font-size: 12px;"><ion-icon name="call-outline"></ion-icon> {{ customerInfo.phone }}</p>
+          @if (customerInfo.phone == "") {
+            <p style="font-size: 12px;"><ion-icon name="call-outline"></ion-icon> {{ customerInfo.phone }}</p>
+          }
         </div>
       </div>
     </div>

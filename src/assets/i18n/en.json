@@ -1,5 +1,11 @@
 {
   "global": {
+    "select_service_msg": "Select one or more services",
+    "save": "Save",
+    "previous": "Previous",
+    "next": "Next",
+    "no_services": "No services available",
+    "services": "Services",
     "back": "Back",
     "logout": "Logout",
     "error_msg": "An error has ocurred",
@@ -10,7 +16,7 @@
     "btn_cancel": "Cancel",
     "btn_confirm": "Confirm",
     "btn_create_appointment": "Create Appointment",
-    "btn_sign_up":"Go to SignUp",
+    "btn_sign_up": "Go to SignUp",
     "barber": "Barber, ",
     "hi": "Hi",
     "emp": "Employee",
@@ -32,6 +38,11 @@
   "tabPanel": {
     "home": "Home",
     "appointment": "Appointments",
-    "account": "Account"
+    "account": "Account",
+    "create_appointment": "Book your Appointment"
+  },
+  "auth": {
+    "signUp_msg": "If you are a customer and do not have an account, we invite you to",
+    "register": "Register"
   }
 }

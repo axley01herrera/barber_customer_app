@@ -1,5 +1,11 @@
 {
   "global": {
+    "select_service_msg": "Seleccione uno o más servicios",
+    "save": "Guardar",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "no_services": "No hay servicios disponibles",
+    "services": "Servicios",
     "back": "Atrás",
     "logout": "Cerrar Sesión",
     "error_msg": "Ha ocurrido un error",
@@ -32,7 +38,13 @@
   "tabPanel": {
     "home": "Inicio",
     "appointment": "Citas",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "create_appointment": "Reserve su Cita "
+  },
+  "auth": {
+    "signup_msg": "Si eres cliente y no tienes cuenta te invitamos a",
+    "register": "Registrarte"
   }
+
 }
 
