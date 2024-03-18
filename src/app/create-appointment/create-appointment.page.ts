@@ -70,6 +70,7 @@ export class CreateAppointmentPage implements OnInit {
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
       this.customerInfo = customerInfo;
+      console.log(this.customerInfo);
       this.getServices();
     });
   }
@@ -102,7 +103,7 @@ export class CreateAppointmentPage implements OnInit {
           String(this.introOk)
         );
         loader.dismiss();
-      })
+      });
     } else { // Error Network
       this.mainService.showAlert(
         String(this.introAtention),
@@ -131,6 +132,42 @@ export class CreateAppointmentPage implements OnInit {
   async next() {
     if (this.selectedServices.length > 0) {
       this.tab = 1;
+      const networkStatus = await this.mainService.getNetworkStatus(); // Check Network Status
+      if (networkStatus) {
+        const loader = await this.mainService.loader();
+        loader.present();
+        const request = new URLSearchParams();
+        request.set('appToken', this.customerInfo.appToken);
+        request.set('services', JSON.stringify(this.selectedServices));
+        request.toString();
+        this, this.http.post(this.enviromentApiUrl + '/Api/employeesByServices', request, this.httpOptions).subscribe((resApi: any) => {
+          if (resApi.error == 0) {
+            this.employeesByServices = resApi.employeesByServices;
+            console.log(this.employeesByServices);
+            loader.dismiss();
+          } else {
+            this.mainService.showAlert(
+              String(this.introAtention),
+              String(this.error_msg),
+              String(this.introOk)
+            );
+            loader.dismiss();
+          }
+        }, (error) => {
+          this.mainService.showAlert(
+            String(this.introAtention),
+            String(this.error_msg),
+            String(this.introOk)
+          );
+          loader.dismiss();
+        });
+      } else { // Error Network
+        this.mainService.showAlert(
+          String(this.introAtention),
+          String(this.not_network_msg),
+          String(this.introOk)
+        );
+      }
     } else {
       this.mainService.showAlert(
         String(this.introAtention),
