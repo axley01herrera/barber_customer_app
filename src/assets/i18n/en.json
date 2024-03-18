@@ -42,7 +42,7 @@
     "create_appointment": "Book your Appointment"
   },
   "auth": {
-    "signUp_msg": "If you are a customer and do not have an account, we invite you to",
+    "signup_msg": "If you are a customer and do not have an account, we invite you to",
     "register": "Register"
   }
 }
