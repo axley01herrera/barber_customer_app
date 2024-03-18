@@ -32,11 +32,18 @@
             [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')" />
         </div>
 
-        <!-- Button Login -->
-        <div class="text-center mb-5">
-          <button class="btn btn-lg w-100 btn-primary border-0" style="background-color: #009abe;" (click)="login()">
-            {{ 'global.btn_login' | translate }}
-          </button>
+        <!-- Buttons Login | Register -->
+        <div class="row mb-5">
+          <div class="text-center col-6">
+            <button class="btn btn-lg w-100 btn-primary border-0" style="background-color: #009abe;" (click)="login()">
+              {{ 'global.btn_login' | translate }}
+            </button>
+          </div>
+          <div class="text-center col-6">
+            <button class="btn btn-lg w-100 btn-primary border-0" style="background-color: #f1f1f2; color: #009abe;" (click)="openSingIn()">
+              {{ 'global.btn_sign_up' | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
