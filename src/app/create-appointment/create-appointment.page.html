@@ -15,7 +15,7 @@
       <div class="card">
         <div class="card-body">
           <label class="form-check form-check-custom align-items-start" style="cursor: pointer;">
-            <input type="checkbox" id="cbx-{{ service.id }}" class="form-check-input me-3 cbx-service" data-value="0" (click)="clickService(service.id)">
+            <input type="checkbox" id="cbx-{{ service.id }}" name="cbx-{{ service.id }}" class="form-check-input me-3" data-value="{{ service.id }}" (click)="clickService(service.id)" />
             <div class="d-flex flex-column h-100">
               <div class="mb-7">
                 <div class="d-flex flex-stack mb-2">
@@ -73,7 +73,6 @@
     }
 
   </div>
-
 </ion-content>
 
 <!-- Tabs Footer -->

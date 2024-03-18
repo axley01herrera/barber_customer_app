@@ -113,19 +113,19 @@ export class CreateAppointmentPage implements OnInit {
   }
 
   async clickService(id) {
-    const cbx = document.getElementById('cbx-' + id);
-    const value = cbx.getAttribute('data-value');
+    const cbx = document.getElementById('cbx-' + id) as HTMLInputElement;
+    const isChecked = cbx.checked; console.log('isChecked', isChecked);
 
-    if (value === '0') { // Select
-      cbx.setAttribute('data-value', '1');
+    if (isChecked === true) { // Select
       this.selectedServices.push(id);
-    } else { // Deselect
-      cbx.setAttribute('data-value', '0');
+    } else if (isChecked === false) { // Deselect
       const index = this.selectedServices.indexOf(id);
       if (index !== -1) {
         this.selectedServices.splice(index, 1);
       }
     }
+
+    console.log('selectedServices', this.selectedServices);
   }
 
   async next() {
@@ -141,11 +141,20 @@ export class CreateAppointmentPage implements OnInit {
 
   }
 
-  async previous () {
+  async previous() {
+    console.log("Previous");
     this.tab = 0;
+    setTimeout(() => {
+      this.selectedServices.forEach(id => {
+        let cbxID = 'cbx-' + Number(id); console.log(cbxID);
+        let cbx = document.getElementById(cbxID) as HTMLInputElement; console.log(cbx);
+        cbx.checked = true;
+      });
+    }, 100);
+    console.log('selectedServices', this.selectedServices);
   }
 
-  async createAppointment () {
+  async createAppointment() {
 
   }
 
