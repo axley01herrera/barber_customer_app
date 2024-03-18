@@ -21,7 +21,10 @@
         <div class="card mb-2 ms-2 me-2 border-0" >
           <div class="card-body border-0" style="background-color: #222428; border-radius: 3%;">
             <div class="d-flex flex-column h-100">
-
+              {{ appointment.appointmentID }}
+              <span class="text-white me-1 pb-1" style="font-size: 15px">
+                {{ appointment.appointmentID }}
+               </span>
               <!-- DateTime -->
               <span class="text-white me-1 pb-1" style="font-size: 15px">
                 {{ appointment.date }}
@@ -74,6 +77,9 @@
           </div>
         </div>
       </div>
+      <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </div>
 
 </ion-content>

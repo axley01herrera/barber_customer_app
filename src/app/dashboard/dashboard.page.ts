@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
 import { Router } from '@angular/router';
+import { InfiniteScrollCustomEvent,NavController  } from '@ionic/angular';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,8 @@ export class DashboardPage implements OnInit {
   customerInfo: any;
   upcomingAppointments: any = [];
   companyInfo: any = {};
+  offset = '0';
+  InfiniteScrollCustomEvent: InfiniteScrollCustomEvent;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -34,15 +37,15 @@ export class DashboardPage implements OnInit {
     private translate: TranslateService,
     private mainService: MainServiceService,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private navCtrl: NavController
   ) {}
 
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
     this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
-      if (companyInfo != null)
-        this.companyInfo = companyInfo;
+      if (companyInfo != null) this.companyInfo = companyInfo;
     });
   }
 
@@ -72,7 +75,7 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  async getUpcomingAppointments() {
+  async getUpcomingAppointments(event?: any) {
     const networkStatus = await this.mainService.getNetworkStatus();
     if (networkStatus) {
       const loader = await this.mainService.loader();
@@ -80,17 +83,34 @@ export class DashboardPage implements OnInit {
       const request = new URLSearchParams();
       request.set('customerID', this.customerInfo.id);
       request.set('appToken', this.customerInfo.appToken);
+      request.set('offset', this.offset);
       request.toString();
       this.http
         .post(
-          this.enviromentApiUrl + 'Api/getCustomerUpcomingAppointments',
+          this.enviromentApiUrl + '/Api/getCustomerUpcomingAppointments',
           request,
           this.httpOptions
         )
         .subscribe(
           (resApi: any) => {
-            if (resApi.upcomingAppointments.length > 0) {
+            if (this.upcomingAppointments.length > 0) {
               this.upcomingAppointments = resApi.upcomingAppointments;
+              
+              this.offset = this.offset + this.upcomingAppointments.length;
+
+              console.log('appReturn '+ resApi.upcomingAppointments.length);
+              console.log('appTotal '+ this.upcomingAppointments.length);
+              console.log('newOffset = ' + this.offset);
+              console.log('Verify 5');
+            }
+            if (this.upcomingAppointments.length == 0) {
+              this.upcomingAppointments = resApi.upcomingAppointments;
+              this.offset = this.upcomingAppointments.length;
+
+              console.log('appReturn '+ resApi.upcomingAppointments.length);
+              console.log('appTotal '+ this.upcomingAppointments.length);
+              console.log('newOffset = ' + this.offset);
+              console.log('Verify 0');
             }
             loader.dismiss();
           },
@@ -141,7 +161,7 @@ export class DashboardPage implements OnInit {
 
     this.http
       .post(
-        this.enviromentApiUrl + 'Api/deleteAppointment',
+        this.enviromentApiUrl + '/Api/deleteAppointment',
         request,
         this.httpOptions
       )
@@ -154,7 +174,7 @@ export class DashboardPage implements OnInit {
               String(this.introOk)
             );
             loader.dismiss();
-            this.getUpcomingAppointments();
+            this.navCtrl.navigateRoot(['/dashboard']);
           } else {
             // Error deleted
             loader.dismiss();
@@ -175,5 +195,14 @@ export class DashboardPage implements OnInit {
           );
         }
       );
+  }
+
+  onIonInfinite(event: any) {
+    if (this.upcomingAppointments.length >= 5) {
+      this.getUpcomingAppointments(event);
+    }
+    setTimeout(() => {
+      (event as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
   }
 }

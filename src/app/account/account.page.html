@@ -11,7 +11,7 @@
     <div class="card-body">
       <div class="row mt-2">
         <div class="col-4">
-          <img style="border-radius: 3%;" src="data:image/png;base64,{{ customerInfo.avatar }}" alt="Customer Avatar" width="100px"  />
+          <img style="border-radius: 3%;" src="data:image/png;base64,{{ customerInfo.avatar }}" alt="" width="100px"  />
         </div>
         <div class="col-8">
           <p class="fw-bold" style="font-size: 12px;">{{ customerInfo.name }} {{ customerInfo.lastName }}</p>
@@ -27,9 +27,6 @@
       {{'global.logout' | translate }}
     </button>
   </div>
-
-
-
 </ion-content>
 
 <ion-tab-bar slot="bottom" color="dark">
