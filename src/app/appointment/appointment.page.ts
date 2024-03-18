@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
 import { Router } from '@angular/router';
+import { InfiniteScrollCustomEvent, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-appointment',
@@ -14,28 +15,35 @@ export class AppointmentPage implements OnInit {
   enviromentApiUrl: string = '';
   lang: string = 'es';
   customerInfo: any;
-  upcomingAppointments: any = [];
+  appointments: any = [];
   companyInfo: any = {};
+  offset = 0;
 
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
     }),
   };
+
+  introAtention: String = '';
+  introOk: String = '';
+  not_network_msg: String = '';
+  error_msg: String = '';
+  app_deleted_msg: String = '';
+
   constructor(
     private storage: Storage,
     private translate: TranslateService,
     private mainService: MainServiceService,
     private http: HttpClient,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
     this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
-      if (companyInfo != null)
-        this.companyInfo = companyInfo;
+      if (companyInfo != null) this.companyInfo = companyInfo;
     });
   }
 
@@ -59,7 +67,76 @@ export class AppointmentPage implements OnInit {
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
       this.customerInfo = customerInfo;
+      this.getAppointments();
     });
   }
 
+  useText() {
+    this.translate.get('intro.atention').subscribe((res: string) => {
+      this.introAtention = res;
+    });
+    this.translate.get('intro.ok').subscribe((res: string) => {
+      this.introOk = res;
+    });
+    this.translate.get('global.not_network_msg').subscribe((res: any) => {
+      this.not_network_msg = res;
+    });
+    this.translate.get('global.error_msg').subscribe((res: any) => {
+      this.error_msg = res;
+    });
+    this.translate.get('dashboard.app_deleted_msg').subscribe((res: any) => {
+      this.app_deleted_msg = res;
+    });
+  }
+
+  async getAppointments(event?: any) {
+    const networkStatus = await this.mainService.getNetworkStatus();
+    if (networkStatus) {
+      const loader = await this.mainService.loader();
+      loader.present();
+      const request = new URLSearchParams();
+      request.set('customerID', this.customerInfo.id);
+      request.set('appToken', this.customerInfo.appToken);
+      request.set('offset', this.offset.toString());
+      request.toString();
+      this.http
+        .post(
+          this.enviromentApiUrl + '/Api/getCustomerAppointments',
+          request,
+          this.httpOptions
+        )
+        .subscribe(
+          (resApi: any) => {
+            if (resApi.appointments.length > 0) {
+              this.appointments.push(...resApi.appointments);
+              this.offset = this.offset + parseInt(resApi.offset);
+              console.log('offset ' + this.offset);
+            }
+            loader.dismiss();
+          },
+          (error) => {
+            this.mainService.showAlert(
+              String(this.introAtention),
+              String(this.error_msg),
+              String(this.introOk)
+            );
+            loader.dismiss();
+          }
+        );
+    } else {
+      // Error Network
+      this.mainService.showAlert(
+        String(this.introAtention),
+        String(this.not_network_msg),
+        String(this.introOk)
+      );
+    }
+  }
+
+  onIonInfinite(event: any) {
+    this.getAppointments(event);
+    setTimeout(() => {
+      (event as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
+  }
 }

@@ -17,7 +17,6 @@ export class DashboardPage implements OnInit {
   customerInfo: any;
   upcomingAppointments: any = [];
   companyInfo: any = {};
-  offset = '0';
   InfiniteScrollCustomEvent: InfiniteScrollCustomEvent;
 
   httpOptions = {
@@ -39,7 +38,7 @@ export class DashboardPage implements OnInit {
     private http: HttpClient,
     private router: Router,
     private navCtrl: NavController
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
@@ -75,7 +74,7 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  async getUpcomingAppointments(event?: any) {
+  async getUpcomingAppointments() {
     const networkStatus = await this.mainService.getNetworkStatus();
     if (networkStatus) {
       const loader = await this.mainService.loader();
@@ -83,7 +82,6 @@ export class DashboardPage implements OnInit {
       const request = new URLSearchParams();
       request.set('customerID', this.customerInfo.id);
       request.set('appToken', this.customerInfo.appToken);
-      request.set('offset', this.offset);
       request.toString();
       this.http
         .post(
@@ -93,24 +91,8 @@ export class DashboardPage implements OnInit {
         )
         .subscribe(
           (resApi: any) => {
-            if (this.upcomingAppointments.length > 0) {
+            if (resApi.upcomingAppointments.length > 0) {
               this.upcomingAppointments = resApi.upcomingAppointments;
-
-              this.offset = this.offset + this.upcomingAppointments.length;
-
-              console.log('appReturn ' + resApi.upcomingAppointments.length);
-              console.log('appTotal ' + this.upcomingAppointments.length);
-              console.log('newOffset = ' + this.offset);
-              console.log('Verify 5');
-            }
-            if (this.upcomingAppointments.length == 0) {
-              this.upcomingAppointments = resApi.upcomingAppointments;
-              this.offset = this.upcomingAppointments.length;
-
-              console.log('appReturn ' + resApi.upcomingAppointments.length);
-              console.log('appTotal ' + this.upcomingAppointments.length);
-              console.log('newOffset = ' + this.offset);
-              console.log('Verify 0');
             }
             loader.dismiss();
           },
@@ -123,7 +105,8 @@ export class DashboardPage implements OnInit {
             loader.dismiss();
           }
         );
-    } else { // Error Network
+    } else {
+      // Error Network
       this.mainService.showAlert(
         String(this.introAtention),
         String(this.not_network_msg),
@@ -153,6 +136,7 @@ export class DashboardPage implements OnInit {
   async cancelAppointment(appID: any) {
     const request = new URLSearchParams();
     request.set('appointmentID', appID);
+    request.set('appToken', this.customerInfo.appToken);
     request.toString();
     console.log(request);
 
@@ -174,7 +158,7 @@ export class DashboardPage implements OnInit {
               String(this.introOk)
             );
             loader.dismiss();
-            this.navCtrl.navigateRoot(['/dashboard']);
+            this.getUpcomingAppointments();
           } else {
             // Error deleted
             loader.dismiss();
@@ -195,14 +179,5 @@ export class DashboardPage implements OnInit {
           );
         }
       );
-  }
-
-  onIonInfinite(event: any) {
-    if (this.upcomingAppointments.length >= 5) {
-      this.getUpcomingAppointments(event);
-    }
-    setTimeout(() => {
-      (event as InfiniteScrollCustomEvent).target.complete();
-    }, 500);
   }
 }
