@@ -1,7 +1,13 @@
 <!-- Header -->
 <ion-header>
   <ion-toolbar color="dark">
-    <img class="ms-2 me-2" src="data:image/png;base64,{{ companyInfo.avatar }}" alt="logo" width="30px" height="30px" />
+    <img
+      class="ms-2 me-2"
+      src="data:image/png;base64,{{ companyInfo.avatar }}"
+      alt="logo"
+      width="30px"
+      height="30px"
+    />
     <ion-title>{{ 'tabPanel.appointment' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,30 +15,53 @@
 <ion-content>
   <!-- Button Create  -->
   <div class="text-end ms-2 me-2 mt-2 mb-2">
-    <button class="btn btn-primary btn-lg border-0 w-100" style="background-color: #009abe">
+    <button
+      class="btn btn-primary btn-lg border-0 w-100"
+      style="background-color: #009abe"
+    >
       {{'global.btn_create_appointment' | translate }}
     </button>
   </div>
 
+  <ion-datetime></ion-datetime>
+
   <div class="row">
     <div class="col-12" *ngFor="let app of appointments">
-      <div class="card mb-2 ms-2 me-2 border-0" >
-        <div class="card-body border-0" style="background-color: #222428; border-radius: 3%;">
+      <div class="card mb-2 ms-2 me-2 border-0">
+        <div
+          class="card-body border-0"
+          style="background-color: #222428; border-radius: 3%"
+        >
           <div class="d-flex flex-column h-100">
-            <span class="text-white me-1 pb-1" style="font-size: 15px">
-              {{ app.appointmentID }}
-             </span>
-            <!-- DateTime -->
-            <span class="text-white me-1 pb-1" style="font-size: 15px">
-              {{ app.date }}
-              <br><span style="font-size: 10px;"><ion-icon name="time-outline"></ion-icon> {{ app.time}}</span>
-            </span>
+            <div
+              class="d-flex justify-content-between align-items-center w-100"
+            >
+              <span class="text-white me-1 pb-1" style="font-size: 15px">
+                {{ app.date }}
+                <br /><span style="font-size: 10px"
+                  ><ion-icon name="time-outline"></ion-icon> {{ app.time}}</span
+                >
+              </span>
+              <div *ngIf="app.status === 0">
+                <ion-badge color="warning text-white"
+                  >{{ 'status.waiting' | translate}}</ion-badge
+                >
+              </div>
+              <div *ngIf="app.status === 1">
+                <ion-badge color="primary text-white">{{ 'status.progress' | translate}}</ion-badge>
+              </div>
+              <div *ngIf="app.status === 2">
+                <ion-badge color="success text-white">{{ 'status.finish' | translate}}</ion-badge>
+              </div>
+            </div>
 
             <!-- Services -->
             <div class="mt-2 mb-3 scroll-container">
               <div *ngFor="let services of app.services">
                 <div class="m-0">
-                  <span class="text-white" style="font-size: 13px">{{services.title }}</span>
+                  <span class="text-white" style="font-size: 13px"
+                    >{{services.title }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -41,10 +70,16 @@
             <div class="d-flex align-items-center flex-wrap d-grid gap-2">
               <div class="d-flex align-items-center me-5 me-xl-13">
                 <div class="symbol symbol-30px symbol-circle me-3">
-                  <img src="{{ app.empAvatar }}" width="40px" style="border-radius: 50%" />
+                  <img
+                    src="{{ app.empAvatar }}"
+                    width="40px"
+                    style="border-radius: 50%"
+                  />
                 </div>
                 <div class="m-0">
-                  <span class="text-white d-block" style="font-size: 12px"> {{ 'global.emp' | translate}}</span>
+                  <span class="text-white d-block" style="font-size: 12px">
+                    {{ 'global.emp' | translate}}</span
+                  >
                   <span class="text-white" style="font-size: 12px">
                     {{ app.empInfo }}
                   </span>
@@ -53,7 +88,11 @@
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center">
                   <div class="symbol symbol-30px symbol-circle me-3">
-                    <ion-icon name="cash-outline" size="large" color="success"></ion-icon>
+                    <ion-icon
+                      name="cash-outline"
+                      size="large"
+                      color="success"
+                    ></ion-icon>
                   </div>
                 </div>
                 <div class="m-0">

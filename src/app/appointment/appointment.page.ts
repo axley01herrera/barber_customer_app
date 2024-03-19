@@ -111,6 +111,7 @@ export class AppointmentPage implements OnInit {
               this.appointments.push(...resApi.appointments);
               this.offset = this.offset + parseInt(resApi.offset);
               console.log('offset ' + this.offset);
+              console.log(this.appointments);
             }
             loader.dismiss();
           },
