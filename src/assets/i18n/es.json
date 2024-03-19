@@ -23,7 +23,8 @@
     "hi": "Hi",
     "emp": "Empleado",
     "price": "Precio",
-    "firePassMsg": "Desde la aplicación necesitamos seguridad por lo que como mínimo debe tener una contraseña que tenga al menos 6 caracteres. Por favor entre a su perfil en la web y actualice su contraseña. Gracias."
+    "firePassMsg": "Desde la aplicación necesitamos seguridad por lo que como mínimo debe tener una contraseña que tenga al menos 6 caracteres. Por favor entre a su perfil en la web y actualice su contraseña. Gracias.",
+    "empty_search_msg": "No hay citas para la fecha seleccionada"
   },
   "intro": {
     "msg1": "Escanea el código QR de tu barbería habitual o ingresa la dirección URL correspondiente.",

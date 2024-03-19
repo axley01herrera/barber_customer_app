@@ -30,6 +30,7 @@ export class AppointmentPage implements OnInit {
   introOk: String = '';
   not_network_msg: String = '';
   error_msg: String = '';
+  empty_search_msg: String = '';
   app_deleted_msg: String = '';
 
   constructor(
@@ -58,6 +59,7 @@ export class AppointmentPage implements OnInit {
       } else this.lang = storageLang;
 
       this.translate.use(this.lang);
+      this.useText();
     });
 
     this.mainService.getStorageEnviromentApiUrl().then((url: any) => {
@@ -84,6 +86,9 @@ export class AppointmentPage implements OnInit {
     });
     this.translate.get('global.error_msg').subscribe((res: any) => {
       this.error_msg = res;
+    });
+    this.translate.get('global.empty_search_msg').subscribe((res: any) => {
+      this.empty_search_msg = res;
     });
     this.translate.get('dashboard.app_deleted_msg').subscribe((res: any) => {
       this.app_deleted_msg = res;
@@ -112,8 +117,6 @@ export class AppointmentPage implements OnInit {
             if (resApi.appointments.length > 0) {
               this.appointments.push(...resApi.appointments);
               this.offset = this.offset + parseInt(resApi.offset);
-              console.log('offset ' + this.offset);
-              console.log('date ' + this.date);
             }
             loader.dismiss();
           },
@@ -165,10 +168,10 @@ export class AppointmentPage implements OnInit {
           (resApi: any) => {
             if (resApi.appointments.length > 0) {
               this.appointments = resApi.appointments;
-            } else{
+            } else {
               this.mainService.showAlert(
                 String(this.introAtention),
-                String(this.error_msg),
+                String(this.empty_search_msg),
                 String(this.introOk)
               );
             }

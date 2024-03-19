@@ -23,7 +23,8 @@
     "hi": "Hi",
     "emp": "Employee",
     "price": "Price",
-    "firePassMsg": "From the application we need strong passwords so at least you must have a password that is at least 6 characters long. Please log in to your profile on the website and update your password. Thank you."
+    "firePassMsg": "From the application we need strong passwords so at least you must have a password that is at least 6 characters long. Please log in to your profile on the website and update your password. Thank you.",
+    "empty_search_msg": "There are no appointments for the selected date"
   },
   "intro": {
     "msg1": "Scan the QR code of your regular barber shop or enter the corresponding URL address.",
@@ -48,8 +49,8 @@
     "register": "Register"
   },
   "status": {
-    "waiting": "En Espera",
-    "progress": "En Curso",
-    "finish": "Expirada"
+    "waiting": "Pending",
+    "progress": "In Progress",
+    "finish": "Finish"
   }
 }
