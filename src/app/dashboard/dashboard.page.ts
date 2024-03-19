@@ -17,7 +17,7 @@ export class DashboardPage implements OnInit {
   customerInfo: any;
   upcomingAppointments: any = [];
   companyInfo: any = {};
-  InfiniteScrollCustomEvent: InfiniteScrollCustomEvent;
+  offset = 0;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -74,7 +74,7 @@ export class DashboardPage implements OnInit {
     });
   }
 
-  async getUpcomingAppointments() {
+  async getUpcomingAppointments(event?: any) {
     const networkStatus = await this.mainService.getNetworkStatus();
     if (networkStatus) {
       const loader = await this.mainService.loader();
@@ -82,6 +82,7 @@ export class DashboardPage implements OnInit {
       const request = new URLSearchParams();
       request.set('customerID', this.customerInfo.id);
       request.set('appToken', this.customerInfo.appToken);
+      request.set('offset', this.offset.toString());
       request.toString();
       this.http
         .post(
@@ -92,7 +93,8 @@ export class DashboardPage implements OnInit {
         .subscribe(
           (resApi: any) => {
             if (resApi.upcomingAppointments.length > 0) {
-              this.upcomingAppointments = resApi.upcomingAppointments;
+              this.upcomingAppointments.push(...resApi.upcomingAppointments);
+              this.offset = this.offset + parseInt(resApi.offset);
             }
             loader.dismiss();
           },
@@ -179,5 +181,12 @@ export class DashboardPage implements OnInit {
           );
         }
       );
+  }
+
+  onIonInfinite(event: any) {
+    this.getUpcomingAppointments(event);
+    setTimeout(() => {
+      (event as InfiniteScrollCustomEvent).target.complete();
+    }, 500);
   }
 }

@@ -46,7 +46,10 @@
   "auth": {
     "signup_msg": "Si eres cliente y no tienes cuenta te invitamos a",
     "register": "Registrarte"
+  },
+  "status": {
+    "waiting": "En Espera",
+    "progress": "En Curso",
+    "finish": "Expirada"
   }
-
 }
-
