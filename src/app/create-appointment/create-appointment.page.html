@@ -14,8 +14,7 @@
     <!-- Next -->
     <div class="row">
       <div class="col-12 text-end">
-        <button class="btn btn-primary border-0 mb-2 " style="background-color: #009abe" (click)="next()">{{
-          "global.next" | translate }}</button>
+        <button class="btn btn-primary border-0 mb-2 " style="background-color: #009abe" (click)="next()">{{"global.next" | translate }}</button>
       </div>
     </div>
     @for (service of services; track $index) {
@@ -52,6 +51,7 @@
     </div>
     }
     } @else {
+    <!-- Alert Empty Services -->
     <div class="mt-2 ms-2 me-2">
       <div class="alert alert-danger d-flex align-items-center" role="alert">
         <div>
@@ -75,12 +75,13 @@
             translate }}</button>
         </div>
       </div>
+
       <!-- Employees  -->
       <div class="justify-content-center mb-5">
         <div style="overflow-x: scroll; position: relative;">
           <div class="d-flex">
             @for (e of employees; track $index) {
-            <button id="emp-{{ e.id }}" class="btn ms-2 me-2" style="min-width: 100px;">
+            <button id="emp-{{ e.id }}" class="btn ms-2 me-2 employees" style="min-width: 100px;" (click)="setEmployee(e.id)">
               @if (e.avatar == "") {
               <img class="bg-primary" src="../../assets/img/blank.png" alt="Employee Avatar" width="50px"
                 style="border-radius: 50%">
@@ -110,6 +111,15 @@
             }
           </div>
         </div>
+
+        <!-- Alert Empty Aailability -->
+        @if (availability.length == 0) {
+          <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <div>
+              {{ 'global.no_appointments_available' | translate }}
+            </div>
+          </div>
+        }
       </div>
     </div>
     }

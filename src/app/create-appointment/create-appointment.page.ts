@@ -40,6 +40,7 @@ export class CreateAppointmentPage implements OnInit {
   not_network_msg: String = '';
   error_msg: String = '';
   select_service_msg: String = '';
+  select_shift: String = '';
 
   constructor(
     private storage: Storage,
@@ -90,7 +91,7 @@ export class CreateAppointmentPage implements OnInit {
       const request = new URLSearchParams();
       request.set('appToken', this.customerInfo.appToken);
       request.toString();
-      this, this.http.post(this.enviromentApiUrl + '/Api/getServices', request, this.httpOptions).subscribe((resApi: any) => {
+      this.http.post(this.enviromentApiUrl + '/Api/getServices', request, this.httpOptions).subscribe((resApi: any) => {
         if (resApi.error == 0) {
           this.services = resApi.services;
           this.date = resApi.date;
@@ -262,6 +263,54 @@ export class CreateAppointmentPage implements OnInit {
   }
 
   async createAppointment() {
+    if (this.time != "") {
+      const networkStatus = await this.mainService.getNetworkStatus(); // Check Network Status
+      if (networkStatus) {
+        const loader = await this.mainService.loader();
+        loader.present();
+        const request = new URLSearchParams();
+        request.set('appToken', this.customerInfo.appToken);
+        request.set('date', this.date);
+        request.set('time', this.time);
+        request.set('employee', this.employeeSelected);
+        request.set('services', JSON.stringify(this.selectedServices));
+        request.toString();
+        this, this.http.post(this.enviromentApiUrl + '/Api/saveAppointment', request, this.httpOptions).subscribe((resApi: any) => {
+          if (resApi.error == 0) {
+            loader.dismiss();
+            this.router.navigate(['dashboard']);
+          } else {
+            this.mainService.showAlert(
+              String(this.introAtention),
+              String(resApi.msg),
+              String(this.introOk)
+            );
+            this.employeeAvailability();
+            loader.dismiss();
+          }
+        }, (error) => {
+          this.mainService.showAlert(
+            String(this.introAtention),
+            String(this.error_msg),
+            String(this.introOk)
+          );
+          loader.dismiss();
+        });
+
+      } else { // Error Network
+        this.mainService.showAlert(
+          String(this.introAtention),
+          String(this.not_network_msg),
+          String(this.introOk)
+        );
+      }
+    } else {
+      this.mainService.showAlert(
+        String(this.introAtention),
+        String(this.select_shift),
+        String(this.introOk)
+      );
+    }
     console.log(this.time);
   }
 
@@ -288,24 +337,36 @@ export class CreateAppointmentPage implements OnInit {
     this.translate.get('global.select_service_msg').subscribe((res: any) => {
       this.select_service_msg = res;
     });
+    this.translate.get('global.select_shift').subscribe((res: any) => {
+      this.select_shift = res;
+    });
+  }
+
+  setEmployee(id) {
+    this.employeeSelected = id;
+    const btnEmployees = document.getElementsByClassName('employees');
+    const count = btnEmployees.length;
+    for (let i = 0; i < count; i++) {
+      const element = btnEmployees[i];
+      element.classList.remove('bg-primary');
+    }
+    const elemet = document.getElementById('emp-' + id);
+    elemet.classList.add('bg-primary');
+    this.employeeAvailability();
   }
 
   setTime(time, index) {
     this.time = time;
     if (index != "") {
       const btnTimes = document.getElementsByClassName('times');
-      const count = btnTimes.length;console.log(count);
-
+      const count = btnTimes.length;
       for (let i = 0; i < count; i++) {
         const element = btnTimes[i];
-        console.log(element)
-        element.classList.remove('bg-primary')
+        element.classList.remove('bg-primary');
       }
-
       const aux = index - 1;
       const elemet = document.getElementById('time-' + aux);
       elemet.classList.add('bg-primary');
     }
   }
-
 }
