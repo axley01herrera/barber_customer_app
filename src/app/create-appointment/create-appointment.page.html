@@ -7,49 +7,50 @@
 </ion-header>
 
 <ion-content>
-  <div class="ms-2 me-2">
+  <div class="ms-2 me-2 mt-2">
+    <!-- Tab Services -->
     @if (tab == 0) {
     @if (services.length > 0) {
+    <!-- Next -->
+    <div class="row">
+      <div class="col-12 text-end">
+        <button class="btn btn-primary border-0 mb-2 " style="background-color: #009abe" (click)="next()">{{
+          "global.next" | translate }}</button>
+      </div>
+    </div>
     @for (service of services; track $index) {
-    <div class="col-12 mt-2">
-      <div class="card">
-        <div class="card-body">
-          <label class="form-check form-check-custom align-items-start" style="cursor: pointer;">
-            <input type="checkbox" id="cbx-{{ service.id }}" name="cbx-{{ service.id }}" class="form-check-input me-3" data-value="{{ service.id }}" (click)="clickService(service.id)" />
-            <div class="d-flex flex-column h-100">
-              <div class="mb-7">
-                <div class="d-flex flex-stack mb-2">
-                  <div class="flex-shrink-0 me-5">
-                    <span class="me-1 pb-1" style="font-size: 15px">{{ service.title }}</span>
+    <div class="card mb-2 border-0">
+      <div class="card-body border-0" style="background-color: #222428; border-radius: 5px;">
+        <label class="form-check form-check-custom align-items-start" style="cursor: pointer;">
+          <input type="checkbox" id="cbx-{{ service.id }}" name="cbx-{{ service.id }}" class="form-check-input me-3"
+            data-value="{{ service.id }}" (click)="clickService(service.id)" />
+          <div class="d-flex flex-column h-100">
+            <div class="mb-7">
+              <div class="d-flex flex-stack mb-2">
+                <div class="flex-shrink-0 me-5">
+                  <span class="me-1 pb-1 text-white" style="font-size: 15px">{{ service.title }}</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center flex-wrap d-grid gap-2">
+                <div class="d-flex align-items-center me-5 me-xl-13">
+                  <ion-icon name="hourglass-outline" color="primary"></ion-icon>
+                  <div class="m-0">
+                    <span class="ms-1 pb-1 text-white" style="font-size: 15px">{{ service.time }} m</span>
                   </div>
                 </div>
-                <div class="d-flex align-items-center flex-wrap d-grid gap-2">
-                  <div class="d-flex align-items-center me-5 me-xl-13">
-                    <img src="../../assets/svg/abs019.svg" />
-                    <div class="m-0">
-                      <span class="me-1 pb-1" style="font-size: 15px">{{ service.time }}</span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <img src="../../assets/svg/fin003.svg" alt="price" />
-                    <div class="m-0">
-                      <span class="me-1 pb-1" style="font-size: 15px">{{ service.price }}</span>
-                    </div>
+                <div class="d-flex align-items-center">
+                  <ion-icon name="cash-outline" color="success"></ion-icon>
+                  <div class="m-0">
+                    <span class="ms-1 pb-1 text-white" style="font-size: 15px">{{ service.price }}</span>
                   </div>
                 </div>
               </div>
             </div>
-          </label>
-        </div>
+          </div>
+        </label>
       </div>
     </div>
     }
-    <div class="mt-2 ms-2 me-2">
-      <div class="col-12 text-end mb-2">
-        <button class="btn btn-primary border-0" style="background-color: #009abe" (click)="next()">{{ "global.next"
-          |translate }}</button>
-      </div>
-    </div>
     } @else {
     <div class="mt-2 ms-2 me-2">
       <div class="alert alert-danger d-flex align-items-center" role="alert">
@@ -61,13 +62,54 @@
     }
     }
 
+    <!-- Tab Employee Date Availability -->
     @if (tab == 1) {
-    <div class="mt-2 ms-2 me-2">
-      <div class="col-12 text-end">
-        <button class="btn btn-secondary me-1" (click)="previous()">{{ "global.previous" | translate }}</button>
-        <button class="btn btn-primary border-0 ms-1" style="background-color: #009abe" (click)="createAppointment()">{{
-          "global.save" |
-          translate }}</button>
+      <div class="mt-2 ms-2 me-2">
+      <div class="row">
+        <div class="col-6 mb-5">
+          <button class="btn btn-secondary" (click)="previous()">{{ "global.previous" | translate }}</button>
+        </div>
+        <div class="col-6 mb-5 text-end">
+          <button class="btn btn-primary border-0 ms-1" style="background-color: #009abe" (click)="createAppointment()">{{
+            "global.save" |
+            translate }}</button>
+        </div>
+      </div>
+      <!-- Employees  -->
+      <div class="justify-content-center mb-5">
+        <div style="overflow-x: scroll; position: relative;">
+          <div class="d-flex">
+            @for (e of employees; track $index) {
+            <button id="emp-{{ e.id }}" class="btn ms-2 me-2" style="min-width: 100px;">
+              @if (e.avatar == "") {
+              <img class="bg-primary" src="../../assets/img/blank.png" alt="Employee Avatar" width="50px"
+                style="border-radius: 50%">
+              } @else {
+              <img src="data:image/png;base64,{{ e.avatar }}" alt="Employee Avatar" width="50px"
+                style="border-radius: 50%">
+              }
+              <br>
+              <span class="text-gray-900" style="font-size: 12px">{{ e.name }}</span>
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="mb-5">
+        <ion-datetime presentation="date" [(ngModel)]="date" min="{{ minDate }}" max="{{ maxDate }}" value="{{ date }}" (click)="employeeAvailability()"></ion-datetime>
+      </div>
+
+      <!-- Availability -->
+      <div class="justify-content-center">
+        <div style="overflow-x: scroll; position: relative;">
+          <div class="d-flex">
+            @for (item of availability; track $index) {
+            <button id="time-{{ $index }}" class="times btn btn-lg btn-outline-primary ms-2 me-2" style="min-width: 150px; border-color: #009abe; color: #222428; font-size: 12px;" (click)="setTime(item, $index + 1)">{{ item }}</button>
+            }
+          </div>
+        </div>
       </div>
     </div>
     }

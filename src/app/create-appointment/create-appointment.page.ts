@@ -19,7 +19,15 @@ export class CreateAppointmentPage implements OnInit {
   services: any = {};
   tab = 0;
   selectedServices = [];
-  employeesByServices = [];
+  serviceTime = 0;
+  employees = [];
+  employeePreferred = "";
+  employeeSelected = "";
+  availability: any = [];
+  minDate = "";
+  maxDate = "";
+  date = "";
+  time = "";
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -70,7 +78,6 @@ export class CreateAppointmentPage implements OnInit {
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
       this.customerInfo = customerInfo;
-      console.log(this.customerInfo);
       this.getServices();
     });
   }
@@ -86,7 +93,9 @@ export class CreateAppointmentPage implements OnInit {
       this, this.http.post(this.enviromentApiUrl + '/Api/getServices', request, this.httpOptions).subscribe((resApi: any) => {
         if (resApi.error == 0) {
           this.services = resApi.services;
-          console.log(this.services);
+          this.date = resApi.date;
+          this.minDate = resApi.date;
+          this.maxDate = resApi.maxDate
           loader.dismiss();
         } else {
           this.mainService.showAlert(
@@ -116,17 +125,20 @@ export class CreateAppointmentPage implements OnInit {
   async clickService(id) {
     const cbx = document.getElementById('cbx-' + id) as HTMLInputElement;
     const isChecked = cbx.checked; console.log('isChecked', isChecked);
-
     if (isChecked === true) { // Select
       this.selectedServices.push(id);
+      const servTime = this.getServiceTimeById(id);
+      this.serviceTime = (this.serviceTime + servTime);
     } else if (isChecked === false) { // Deselect
       const index = this.selectedServices.indexOf(id);
       if (index !== -1) {
         this.selectedServices.splice(index, 1);
+        const servTime = this.getServiceTimeById(id);
+        this.serviceTime = (this.serviceTime - servTime);
       }
     }
-
     console.log('selectedServices', this.selectedServices);
+    console.log('serviceTime', this.serviceTime);
   }
 
   async next() {
@@ -142,9 +154,27 @@ export class CreateAppointmentPage implements OnInit {
         request.toString();
         this, this.http.post(this.enviromentApiUrl + '/Api/employeesByServices', request, this.httpOptions).subscribe((resApi: any) => {
           if (resApi.error == 0) {
-            this.employeesByServices = resApi.employeesByServices;
-            console.log(this.employeesByServices);
-            loader.dismiss();
+            this.employees = resApi.employeesByServices.employees;
+            this.employeePreferred = resApi.employeePreferred;
+            if (this.employees.length > 0) {
+              if (this.employeePreferred == "") {
+                setTimeout(() => {
+                  this.employeeSelected = this.employees[0].id;
+                  const btnEmpSelected = document.getElementById('emp-' + this.employees[0].id);
+                  btnEmpSelected.classList.add('bg-primary');
+                  loader.dismiss();
+                  this.employeeAvailability();
+                }, 100);
+              } else {
+                setTimeout(() => {
+                  this.employeeSelected = this.employeePreferred;
+                  const btnEmpSelected = document.getElementById('emp-' + this.employeePreferred);
+                  btnEmpSelected.classList.add('bg-primary');
+                  loader.dismiss();
+                  this.employeeAvailability();
+                }, 100);
+              }
+            }
           } else {
             this.mainService.showAlert(
               String(this.introAtention),
@@ -175,7 +205,46 @@ export class CreateAppointmentPage implements OnInit {
         String(this.introOk)
       );
     }
+  }
 
+  async employeeAvailability() {
+    const networkStatus = await this.mainService.getNetworkStatus(); // Check Network Status
+    if (networkStatus) {
+      const loader = await this.mainService.loader();
+      loader.present();
+      const request = new URLSearchParams();
+      request.set('appToken', this.customerInfo.appToken);
+      request.set('employee', this.employeeSelected);
+      request.set('date', this.date);
+      request.set('serviceTime', this.serviceTime.toString());
+      request.toString();
+      this, this.http.post(this.enviromentApiUrl + '/Api/employeeAvailability', request, this.httpOptions).subscribe((resApi: any) => {
+        if (resApi.error == 0) {
+          this.availability = resApi.employeeAvailability.availability;
+          loader.dismiss();
+        } else {
+          this.mainService.showAlert(
+            String(this.introAtention),
+            String(this.error_msg),
+            String(this.introOk)
+          );
+          loader.dismiss();
+        }
+      }, (error) => {
+        this.mainService.showAlert(
+          String(this.introAtention),
+          String(this.error_msg),
+          String(this.introOk)
+        );
+        loader.dismiss();
+      });
+    } else { // Error Network
+      this.mainService.showAlert(
+        String(this.introAtention),
+        String(this.not_network_msg),
+        String(this.introOk)
+      );
+    }
   }
 
   async previous() {
@@ -188,11 +257,19 @@ export class CreateAppointmentPage implements OnInit {
         cbx.checked = true;
       });
     }, 100);
+    this.setTime("", "");
     console.log('selectedServices', this.selectedServices);
   }
 
   async createAppointment() {
+    console.log(this.time);
+  }
 
+  getServiceTimeById(id) {
+    const serv = this.services.find(serv => serv.id === id);
+    if (serv) {
+      return serv.time;
+    }
   }
 
   useText() {
@@ -211,6 +288,24 @@ export class CreateAppointmentPage implements OnInit {
     this.translate.get('global.select_service_msg').subscribe((res: any) => {
       this.select_service_msg = res;
     });
+  }
+
+  setTime(time, index) {
+    this.time = time;
+    if (index != "") {
+      const btnTimes = document.getElementsByClassName('times');
+      const count = btnTimes.length;console.log(count);
+
+      for (let i = 0; i < count; i++) {
+        const element = btnTimes[i];
+        console.log(element)
+        element.classList.remove('bg-primary')
+      }
+
+      const aux = index - 1;
+      const elemet = document.getElementById('time-' + aux);
+      elemet.classList.add('bg-primary');
+    }
   }
 
 }
