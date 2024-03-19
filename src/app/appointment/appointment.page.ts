@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
 import { Router } from '@angular/router';
-import { InfiniteScrollCustomEvent, NavController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent } from '@ionic/angular';
 
 @Component({
   selector: 'app-appointment',
@@ -18,6 +18,7 @@ export class AppointmentPage implements OnInit {
   appointments: any = [];
   companyInfo: any = {};
   offset = 0;
+  date: string = '';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -98,6 +99,7 @@ export class AppointmentPage implements OnInit {
       request.set('customerID', this.customerInfo.id);
       request.set('appToken', this.customerInfo.appToken);
       request.set('offset', this.offset.toString());
+      request.set('date', this.date);
       request.toString();
       this.http
         .post(
@@ -111,7 +113,7 @@ export class AppointmentPage implements OnInit {
               this.appointments.push(...resApi.appointments);
               this.offset = this.offset + parseInt(resApi.offset);
               console.log('offset ' + this.offset);
-              console.log(this.appointments);
+              console.log('date ' + this.date);
             }
             loader.dismiss();
           },
@@ -139,5 +141,55 @@ export class AppointmentPage implements OnInit {
     setTimeout(() => {
       (event as InfiniteScrollCustomEvent).target.complete();
     }, 500);
+  }
+
+  async openSearch() {
+    console.log(this.date);
+    const networkStatus = await this.mainService.getNetworkStatus();
+    if (networkStatus) {
+      const loader = await this.mainService.loader();
+      loader.present();
+      const request = new URLSearchParams();
+      request.set('customerID', this.customerInfo.id);
+      request.set('appToken', this.customerInfo.appToken);
+      request.set('offset', '0');
+      request.set('date', this.date);
+      request.toString();
+      this.http
+        .post(
+          this.enviromentApiUrl + '/Api/getCustomerAppointments',
+          request,
+          this.httpOptions
+        )
+        .subscribe(
+          (resApi: any) => {
+            if (resApi.appointments.length > 0) {
+              this.appointments = resApi.appointments;
+            } else{
+              this.mainService.showAlert(
+                String(this.introAtention),
+                String(this.error_msg),
+                String(this.introOk)
+              );
+            }
+            loader.dismiss();
+          },
+          (error) => {
+            this.mainService.showAlert(
+              String(this.introAtention),
+              String(this.error_msg),
+              String(this.introOk)
+            );
+            loader.dismiss();
+          }
+        );
+    } else {
+      // Error Network
+      this.mainService.showAlert(
+        String(this.introAtention),
+        String(this.not_network_msg),
+        String(this.introOk)
+      );
+    }
   }
 }

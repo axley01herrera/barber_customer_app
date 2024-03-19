@@ -17,10 +17,26 @@
   <div class="text-end ms-2 me-2 mt-2 mb-2">
     <button
       class="btn btn-primary btn-lg border-0 w-100"
-      style="background-color: #009abe" routerLink="/create-appointment"
+      style="background-color: #009abe"
+      routerLink="/create-appointment"
     >
       {{'global.btn_create_appointment' | translate }}
     </button>
+  </div>
+
+  <div class="ms-0 me-0 mt-2 mb-2 row">
+    <div class="col-8">
+      <input
+        type="date"
+        class="form-control mt-1"
+        [(ngModel)]="date"
+      />
+    </div>
+    <div class="col-4 text-end">
+      <ion-button (click)="openSearch()" class="btn-sm">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+    </div>
   </div>
 
   <div class="row">
@@ -46,10 +62,14 @@
                 >
               </div>
               <div *ngIf="app.status === 1">
-                <ion-badge color="primary text-white">{{ 'status.progress' | translate}}</ion-badge>
+                <ion-badge color="primary text-white"
+                  >{{ 'status.progress' | translate}}</ion-badge
+                >
               </div>
               <div *ngIf="app.status === 2">
-                <ion-badge color="success text-white">{{ 'status.finish' | translate}}</ion-badge>
+                <ion-badge color="success text-white"
+                  >{{ 'status.finish' | translate}}</ion-badge
+                >
               </div>
             </div>
 
