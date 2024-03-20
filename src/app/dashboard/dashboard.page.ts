@@ -35,7 +35,7 @@ export class DashboardPage implements OnInit {
     private mainService: MainServiceService,
     private http: HttpClient,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
@@ -88,9 +88,7 @@ export class DashboardPage implements OnInit {
         )
         .subscribe(
           (resApi: any) => {
-            if (resApi.upcomingAppointments.length > 0) {
-              this.upcomingAppointments = resApi.upcomingAppointments;
-            }
+            this.upcomingAppointments = resApi.upcomingAppointments;
             loader.dismiss();
           },
           (error) => {
@@ -140,41 +138,34 @@ export class DashboardPage implements OnInit {
     const loader = await this.mainService.loader();
     await loader.present();
 
-    this.http
-      .post(
-        this.enviromentApiUrl + '/Api/deleteAppointment',
-        request,
-        this.httpOptions
-      )
-      .subscribe(
-        (response: any) => {
-          if (response.error == 0) {
-            this.getUpcomingAppointments();
-            this.mainService.showAlert(
-              String(this.introAtention),
-              String(this.app_deleted_msg),
-              String(this.introOk)
-            );
-            loader.dismiss();
-          } else {
-            // Error deleted
-            loader.dismiss();
-            this.mainService.showAlert(
-              String(this.introAtention),
-              String(this.error_msg),
-              String(this.introOk)
-            );
-          }
-        },
-        (error) => {
-          // Error deleted
-          loader.dismiss();
-          this.mainService.showAlert(
-            String(this.introAtention),
-            String(this.error_msg),
-            String(this.introOk)
-          );
-        }
-      );
+    this.http.post(this.enviromentApiUrl + '/Api/deleteAppointment', request, this.httpOptions).subscribe((response: any) => {
+      if (response.error == 0) {
+        this.getUpcomingAppointments();
+        this.mainService.showAlert(
+          String(this.introAtention),
+          String(this.app_deleted_msg),
+          String(this.introOk)
+        );
+        loader.dismiss();
+      } else {
+        // Error deleted
+        loader.dismiss();
+        this.mainService.showAlert(
+          String(this.introAtention),
+          String(this.error_msg),
+          String(this.introOk)
+        );
+      }
+    },
+      (error) => {
+        // Error deleted
+        loader.dismiss();
+        this.mainService.showAlert(
+          String(this.introAtention),
+          String(this.error_msg),
+          String(this.introOk)
+        );
+      }
+    );
   }
 }
