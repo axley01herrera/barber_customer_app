@@ -1,125 +1,84 @@
 <!-- Header -->
 <ion-header>
   <ion-toolbar color="dark">
-    <img
-      class="ms-2 me-2"
-      src="data:image/png;base64,{{ companyInfo.avatar }}"
-      alt="logo"
-      width="30px"
-      height="30px"
-    />
+    <img class="ms-2 me-2" src="data:image/png;base64,{{ companyInfo.avatar }}" alt="logo" width="30px" height="30px" />
     <ion-title>{{ 'tabPanel.appointment' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Button Create  -->
-  <div class="text-end ms-2 me-2 mt-2 mb-2">
-    <button
-      class="btn btn-primary btn-lg border-0 w-100"
-      style="background-color: #009abe"
-      routerLink="/create-appointment"
-    >
-      {{'global.btn_create_appointment' | translate }}
-    </button>
-  </div>
+  <div class="main-container">
+    <div class="row">
+      <div class="col-12 mt-2 mb-2">
+        <!-- Create Appointment -->
+        <button class="btn btn-primary btn-lg border-0 w-100" style="background-color: #009abe"
+          routerLink="/create-appointment">
+          {{'global.btn_create_appointment' | translate }}
+        </button>
+      </div>
+      <div class="col-9 mb-2">
+        <!-- Search Date -->
+        <input type="date" class="form-control" [(ngModel)]="date" />
+      </div>
 
-  <div class="ms-0 me-0 mt-2 mb-2 row">
-    <div class="col-8">
-      <input
-        type="date"
-        class="form-control mt-1"
-        [(ngModel)]="date"
-      />
-    </div>
-    <div class="col-4 text-end">
-      <ion-button (click)="openSearch()" class="btn-sm">
-        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
-      </ion-button>
-    </div>
-  </div>
+      <div class="col-3 mb-2">
+        <!-- Btn Search -->
+        <button class="btn btn-primary btn border-0 w-100" style="background-color: #009abe" (click)="openSearch()">
+          <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+        </button>
+      </div>
 
-  <div class="row">
-    <div class="col-12" *ngFor="let app of appointments">
-      <div class="card mb-2 ms-2 me-2 border-0">
-        <div
-          class="card-body border-0"
-          style="background-color: #222428; border-radius: 3%"
-        >
-          <div class="d-flex flex-column h-100">
-            <div
-              class="d-flex justify-content-between align-items-center w-100"
-            >
-              <span class="text-white me-1 pb-1" style="font-size: 15px">
-                {{ app.date }}
-                <br /><span style="font-size: 10px"
-                  ><ion-icon name="time-outline"></ion-icon> {{ app.time}}</span
-                >
-              </span>
-              <div *ngIf="app.status === 0">
-                <ion-badge color="warning text-white"
-                  >{{ 'status.waiting' | translate}}</ion-badge
-                >
-              </div>
-              <div *ngIf="app.status === 1">
-                <ion-badge color="primary text-white"
-                  >{{ 'status.progress' | translate}}</ion-badge
-                >
-              </div>
-              <div *ngIf="app.status === 2">
-                <ion-badge color="success text-white"
-                  >{{ 'status.finish' | translate}}</ion-badge
-                >
-              </div>
-            </div>
-
-            <!-- Services -->
-            <div class="mt-2 mb-3 scroll-container">
-              <div *ngFor="let services of app.services">
-                <div class="m-0">
-                  <span class="text-white" style="font-size: 13px"
-                    >{{services.title }}</span
-                  >
+      <!-- Appointments -->
+      <div class="col-12" *ngFor="let app of appointments">
+        <div class="card mb-2 border-0">
+          <div class="card-body border-0 card-bg">
+            <div class="d-flex flex-column h-100">
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <span class="text-white font-lg">
+                  {{ app.date }}
+                  <br /><span class="font-md"><ion-icon name="time-outline"></ion-icon> {{ app.time}}</span>
+                </span>
+                <div *ngIf="app.status === 0">
+                  <span class="badge text-bg-warning font-lg">{{ 'status.waiting' | translate}}</span>
+                </div>
+                <div *ngIf="app.status === 1">
+                  <span class="badge text-bg-primary font-lg">{{ 'status.progress' | translate}}</span>
+                </div>
+                <div *ngIf="app.status === 2">
+                  <span class="badge text-bg-success font-lg">{{ 'status.finish' | translate}}</span>
                 </div>
               </div>
-            </div>
-
-            <!-- Emp and Price -->
-            <div class="d-flex align-items-center flex-wrap d-grid gap-2">
-              <div class="d-flex align-items-center me-5 me-xl-13">
-                <div class="symbol symbol-30px symbol-circle me-3">
-                  <img
-                    src="{{ app.empAvatar }}"
-                    width="40px"
-                    style="border-radius: 50%"
-                  />
-                </div>
-                <div class="m-0">
-                  <span class="text-white d-block" style="font-size: 12px">
-                    {{ 'global.emp' | translate}}</span
-                  >
-                  <span class="text-white" style="font-size: 12px">
-                    {{ app.empInfo }}
-                  </span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center">
-                <div class="d-flex align-items-center">
-                  <div class="symbol symbol-30px symbol-circle me-3">
-                    <ion-icon
-                      name="cash-outline"
-                      size="large"
-                      color="success"
-                    ></ion-icon>
+              <!-- Services -->
+              <div class="mt-2 mb-2">
+                <div *ngFor="let services of app.services">
+                  <div class="m-0">
+                    <span class="text-white font-sm">{{services.title }}</span>
                   </div>
                 </div>
-                <div class="m-0">
-                  <span class="text-white d-block" style="font-size: 12px">
-                    {{ 'global.price' | translate }}
-                  </span>
-                  <span class="text-white" style="font-size: 12px">
-                    {{ app.price }}
-                  </span>
+              </div>
+              <!-- Emp and Price -->
+              <div class="d-flex align-items-center flex-wrap d-grid gap-2">
+                <div class="d-flex align-items-center me-5 me-xl-13">
+                  <div class="symbol symbol-30px symbol-circle me-3">
+                    <img src="{{ app.empAvatar }}" width="40px" style="border-radius: 50%" />
+                  </div>
+                  <div class="m-0">
+                    <span class="text-white font-lg" >
+                      {{ app.empInfo }}
+                    </span>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center">
+                    <div class="symbol symbol-30px symbol-circle me-3">
+                      <ion-icon name="cash-outline" size="large" color="success"></ion-icon>
+                    </div>
+                  </div>
+                  <div class="m-0">
+                    <span class="text-white font-lg">
+                      {{ app.price }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -129,9 +88,13 @@
     </div>
   </div>
 
-  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <div>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+
 </ion-content>
 
 <!-- Tabs Footer -->

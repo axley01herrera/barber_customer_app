@@ -7,38 +7,36 @@
 </ion-header>
 
 <ion-content>
+  <div class="main-container">
 
-    <!-- Button Create  -->
-    <div class="text-end ms-2 me-2 mt-2 mb-2">
-      <button class="btn btn-primary btn-lg border-0 w-100" style="background-color: #009abe" routerLink="/create-appointment">
-        {{'global.btn_create_appointment' | translate }}
-      </button>
+    <div class="row">
+      <div class="col-12 mt-2 mb-2">
+        <!-- Button Create  -->
+        <button class="btn btn-primary btn-lg border-0 w-100" style="background-color: #009abe" routerLink="/create-appointment">
+          {{'global.btn_create_appointment' | translate }}
+        </button>
+      </div>
     </div>
 
     <!-- Upcoming Appointments -->
     <div class="row">
       <div class="col-12" *ngFor="let appointment of upcomingAppointments">
-        <div class="card mb-2 ms-2 me-2 border-0" >
-          <div class="card-body border-0" style="background-color: #222428; border-radius: 3%;">
+        <div class="card mb-2 border-0" >
+          <div class="card-body border-0 card-bg">
             <div class="d-flex flex-column h-100">
-              <span class="text-white me-1 pb-1" style="font-size: 15px">
-                {{ appointment.appointmentID }}
-               </span>
               <!-- DateTime -->
-              <span class="text-white me-1 pb-1" style="font-size: 15px">
+              <span class="text-white font-lg">
                 {{ appointment.date }}
-                <br><span style="font-size: 10px;"><ion-icon name="time-outline"></ion-icon> {{ appointment.time}}</span>
+                <br><span class="font-md"><ion-icon name="time-outline" style="font-size: large;"></ion-icon> {{ appointment.time}}</span>
               </span>
-
               <!-- Services -->
-              <div class="mt-2 mb-3 scroll-container">
+              <div class="mt-2 mb-2">
                 <div *ngFor="let services of appointment.services">
                   <div class="m-0">
-                    <span class="text-white" style="font-size: 13px">{{services.title }}</span>
+                    <span class="text-white font-sm">{{services.title }}</span>
                   </div>
                 </div>
               </div>
-
               <!-- Emp and Price -->
               <div class="d-flex align-items-center flex-wrap d-grid gap-2">
                 <div class="d-flex align-items-center me-5 me-xl-13">
@@ -46,8 +44,7 @@
                     <img src="{{ appointment.empAvatar }}" width="40px" style="border-radius: 50%" />
                   </div>
                   <div class="m-0">
-                    <span class="text-white d-block" style="font-size: 12px"> {{ 'global.emp' | translate}}</span>
-                    <span class="text-white" style="font-size: 12px">
+                    <span class="text-white font-lg">
                       {{ appointment.empInfo }}
                     </span>
                   </div>
@@ -59,10 +56,7 @@
                     </div>
                   </div>
                   <div class="m-0">
-                    <span class="text-white d-block" style="font-size: 12px">
-                      {{ 'global.price' | translate }}
-                    </span>
-                    <span class="text-white" style="font-size: 12px">
+                    <span class="text-white font-lg">
                       {{ appointment.price }}
                     </span>
                   </div>
@@ -78,6 +72,7 @@
       </div>
     </div>
 
+  </div>
 </ion-content>
 
 <!-- Tabs Footer -->

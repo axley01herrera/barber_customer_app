@@ -24,3 +24,41 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+@import "theme/font.scss";
+
+* {
+  font-family: Madimi;
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('assets/img/bg4.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.main-container {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.font-lg {
+  font-size: large;
+}
+
+.font-md {
+  font-size: medium;
+}
+
+.font-sm {
+  font-size: small;
+}
+
+.card-bg {
+  background-color: #13263c;
+  border-radius: 5px;
+}

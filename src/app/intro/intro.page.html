@@ -1,46 +1,62 @@
+<!-- Header -->
+<ion-header>
+  <ion-toolbar color="dark">
+    <div class="text-center">
+      <!-- Set Lang -->
+      <div class="float-start">
+        <button type="button" class="btn header-item" (click)="openModalLang()">
+          <div *ngIf="lang == 'es';">
+            <img id="header-lang-img" src="assets/img/spain.jpg" alt="spanish" height="20">
+          </div>
+          <div *ngIf="lang == 'en';">
+            <img id="header-lang-img" src="assets/img/us.jpg" alt="spanish" height="20">
+          </div>
+        </button>
+      </div>
+      <div class="float-center">
+        <!-- Logo -->
+        <ion-title><img class="ms-2 me-2" src="assets/img/logo.png" alt="logo" width="100px" height="20px" /></ion-title>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<!-- End Header -->
+
+<!-- Content -->
 <ion-content>
   <div class="auth-container">
-    <div class="card" style="width: 90%;">
+    <div class="card main-container">
       <div class="card-body">
-
-        <!-- Logo -->
         <div class="row">
-          <div class="col-12 text-center mb-2">
-            <img src="assets/img/logo.png" alt="logo" width="150px" height="30px">
+          <div class="col-12 mb-2">
+            <!-- Into Message -->
+            <span>{{ 'intro.msg1' | translate }}</span>
           </div>
-        </div>
 
-        <!-- Into Message -->
-        <p>{{ 'intro.msg1' | translate }}</p>
+          <div class="col-12 mb-2">
+            <!-- Intro Input -->
+            <input id="txt-url" type="text" class="form-control required"
+              placeholder="{{ 'intro.exampleUrl' | translate }}" [(ngModel)]="url" (focus)="onFocusTxtUrl()" />
+          </div>
 
-        <!-- Intro Input -->
-        <div class="mb-2">
-          <input id="txt-url" type="text" class="form-control required"
-            placeholder="{{ 'intro.exampleUrl' | translate }}" [(ngModel)]="url" (focus)="onFocusTxtUrl()" />
-        </div>
-
-        <!-- Btn Next -->
-        <div class="text-center mb-2">
-          <button class="btn btn-primary btn-lg w-100 border-0" style="background-color: #009abe;" (click)="next()">
-            {{ 'intro.btn_next' | translate }}
-          </button>
-        </div>
-
-        <!-- Set Lang -->
-        <div class="text-center">
-          <button type="button" class="btn header-item" (click)="openModalLang()">
-            <div *ngIf="lang == 'es';">
-              <img id="header-lang-img" src="assets/img/spain.jpg" alt="spanish" height="20">
-            </div>
-            <div *ngIf="lang == 'en';">
-              <img id="header-lang-img" src="assets/img/us.jpg" alt="spanish" height="20">
-            </div>
-          </button>
+          <div class="col-12 text-center mb-2">
+            <!-- Btn Next -->
+            <button class="btn btn-primary btn-lg w-100 border-0" style="background-color: #009abe;" (click)="next()">
+              {{ 'intro.btn_next' | translate }}
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </ion-content>
+<!-- End Content -->
+
+<ion-footer>
+  <ion-toolbar color="dark">
+    <ion-title>© Powered by Ojeda's Computing LLC</ion-title>
+  </ion-toolbar>
+</ion-footer>
 
 <!-- QR -->
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
@@ -48,3 +64,4 @@
     <ion-icon name="scan"></ion-icon>
   </ion-fab-button>
 </ion-fab>
+<!-- End QR -->

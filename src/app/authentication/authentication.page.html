@@ -1,49 +1,50 @@
 <ion-content>
   <div class="auth-container">
-    <div class="card" style="width: 90%;">
+    <div class="card main-container">
       <div class="card-body">
-        <div class="text-end">
 
-          <ion-icon name="arrow-back-circle-outline" size="large" color="primary" (click)="logout()"></ion-icon>
-        </div>
-        <!-- Logo -->
         <div class="row">
+
+          <div class="col-12 text-end">
+            <!-- Back Btn -->
+            <ion-icon name="arrow-back-circle-outline" size="large" color="primary" (click)="logout()"></ion-icon>
+          </div>
+
           <div class="col-12 text-center">
+            <!-- Company Logo -->
             <img src="data:image/png;base64,{{ companyInfo.avatar }}" alt="logo" width="100px">
           </div>
-        </div>
 
-        <!-- Ath msg -->
-        <div class="row">
           <div class="col-12 text-center">
+            <!-- Ath msg -->
             <h5 class="fs-5"><span>{{ companyInfo.type }} </span><span>{{companyInfo.name }}</span> </h5>
           </div>
-        </div>
 
-        <!-- Email -->
-        <div class="mb-3">
-          <input id="txt-email" type="text" class="form-control" placeholder="{{ 'global.email' | translate }}"
-            [(ngModel)]="userEmail" (focus)="onFocusTxtUrl('txt-email')" />
-        </div>
+          <div class="col-12 mb-2">
+            <!-- Input Email -->
+            <input id="txt-email" type="text" class="form-control" placeholder="{{ 'global.email' | translate }}"
+              [(ngModel)]="userEmail" (focus)="onFocusTxtUrl('txt-email')" />
+          </div>
 
-        <!-- Password -->
-        <div class="mb-3">
-          <input id="txt-password" type="password" class="form-control" placeholder="{{ 'global.pass' | translate }}"
-            [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')" />
-        </div>
+          <div class="col-12 mb-2">
+            <!-- Input Password -->
+            <input id="txt-password" type="password" class="form-control" placeholder="{{ 'global.pass' | translate }}"
+              [(ngModel)]="userPassword" (focus)="onFocusTxtUrl('txt-password')" />
+          </div>
 
-        <!-- Buttons Login | Register -->
-        <div class="row ">
-          <div class="text-center col-12 mb-3">
+          <div class="col-12 text-center mb-3">
+            <!-- Login -->
             <button class="btn btn-lg w-100 btn-primary border-0" style="background-color: #009abe;" (click)="login()">
               {{ 'global.btn_login' | translate }}
             </button>
           </div>
 
-          <div class="text-center col-12">
-          <p class="fs-6 fs-lg-5 text-muted">{{ 'auth.signup_msg' | translate}} <span style="color: #009abe;" (click)="openSingIn()">{{ 'auth.register' | translate }}</span>.</p>
-            <!-- Signup Customer -->
-            <a href="http://dev.barberhi/Home/signUpCustomer" class="btn btn-lg btn-outline border-2 text-white btn-outline-white flex-shrink-0 my-2">Registrarme</a>
+          <div class="col-12 text-center mb-">
+            <p class="fs-6 fs-lg-5 text-muted">{{ 'auth.signup_msg' | translate}} <span style="color: #009abe;"
+                (click)="openSingIn()">{{ 'auth.register' | translate }}</span>.</p>
+            <!-- Signup -->
+            <a href="http://dev.barberhi/Home/signUpCustomer"
+              class="btn btn-lg btn-outline border-2 text-white btn-outline-white flex-shrink-0 my-2">Registrarme</a>
           </div>
         </div>
       </div>
