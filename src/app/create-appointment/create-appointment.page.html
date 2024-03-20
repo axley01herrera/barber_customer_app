@@ -5,7 +5,9 @@
     <ion-title>{{ 'tabPanel.create_appointment' | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
+<!-- End Header -->
 
+<!-- Content -->
 <ion-content>
   <div class="main-container">
     <!-- Tab Services -->
@@ -61,7 +63,6 @@
     </div>
     }
     }
-
     <!-- Tab Employee Date Availability -->
     @if (tab == 1) {
       <div class="mt-2 ms-2 me-2">
@@ -75,8 +76,7 @@
             translate }}</button>
         </div>
       </div>
-
-      <!-- Employees  -->
+      <!-- Employees -->
       <div class="justify-content-center mb-5">
         <div style="overflow-x: scroll; position: relative;">
           <div class="d-flex">
@@ -96,12 +96,10 @@
           </div>
         </div>
       </div>
-
       <!-- Date -->
       <div class="mb-5">
         <ion-datetime presentation="date" [(ngModel)]="date" min="{{ minDate }}" max="{{ maxDate }}" value="{{ date }}" (click)="employeeAvailability()"></ion-datetime>
       </div>
-
       <!-- Availability -->
       <div class="justify-content-center">
         <div style="overflow-x: scroll; position: relative;">
@@ -111,7 +109,6 @@
             }
           </div>
         </div>
-
         <!-- Alert Empty Aailability -->
         @if (availability.length == 0) {
           <div class="alert alert-danger d-flex align-items-center" role="alert">
@@ -123,9 +120,9 @@
       </div>
     </div>
     }
-
   </div>
 </ion-content>
+<!-- End Content -->
 
 <!-- Tabs Footer -->
 <ion-tab-bar slot="bottom" color="dark">

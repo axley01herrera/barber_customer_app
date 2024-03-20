@@ -79,6 +79,7 @@ export class CreateAppointmentPage implements OnInit {
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
       this.customerInfo = customerInfo;
+      console.log(this.customerInfo);
       this.getServices();
     });
   }
@@ -162,13 +163,13 @@ export class CreateAppointmentPage implements OnInit {
                 setTimeout(() => {
                   this.employeeSelected = this.employees[0].id;
                   loader.dismiss();
-                  this.setEmployee(this.employees[0].id);
+                  this.setEmployee(this.employeeSelected);
                 }, 100);
               } else {
                 setTimeout(() => {
                   this.employeeSelected = this.employeePreferred;
                   loader.dismiss();
-                  this.setEmployee(this.employees[0].id);
+                  this.setEmployee(this.employeeSelected);
                 }, 100);
               }
             }
