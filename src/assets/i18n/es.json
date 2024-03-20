@@ -36,7 +36,7 @@
     "invalid_url": "Rectifique su URL"
   },
   "dashboard": {
-    "app_deleted_msg": "Cita eliminada"
+    "app_deleted_msg": "Cita cancelada"
   },
   "tabPanel": {
     "home": "Inicio",

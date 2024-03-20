@@ -36,7 +36,7 @@
     "invalid_url": "Please correct your URL"
   },
   "dashboard": {
-    "app_deleted_msg": "Appointment deleted"
+    "app_deleted_msg": "Canceled appointment"
   },
   "tabPanel": {
     "home": "Home",

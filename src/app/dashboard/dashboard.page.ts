@@ -149,13 +149,13 @@ export class DashboardPage implements OnInit {
       .subscribe(
         (response: any) => {
           if (response.error == 0) {
+            this.getUpcomingAppointments();
             this.mainService.showAlert(
               String(this.introAtention),
               String(this.app_deleted_msg),
               String(this.introOk)
             );
             loader.dismiss();
-            this.getUpcomingAppointments();
           } else {
             // Error deleted
             loader.dismiss();
