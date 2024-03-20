@@ -7,31 +7,47 @@
 </ion-header>
 
 <ion-content>
-  <div class="card mt-2 ms-2 me-2">
-    <div class="card-body">
-      <div class="row mt-2">
-        <div class="col-4">
-          @if (customerInfo.avatar == "") {
-          <img style="border-radius: 3%;" src="../../assets/img/blank.png" alt="" width="100px" />
-          } @else {
-          <img style="border-radius: 3%;" src="data:image/png;base64,{{ customerInfo.avatar }}" alt="" width="100px" />
-          }
-        </div>
-        <div class="col-8">
-          <p class="fw-bold" style="font-size: 12px;">{{ customerInfo.name }} {{ customerInfo.lastName }}</p>
-          <p style="font-size: 12px;"><ion-icon name="mail-outline"></ion-icon> {{ customerInfo.email }}</p>
-          @if (customerInfo.phone == "") {
-            <p style="font-size: 12px;"><ion-icon name="call-outline"></ion-icon> {{ customerInfo.phone }}</p>
-          }
+  <div class="main-container">
+
+    <!-- Customer Info -->
+    <div class="card mt-2 mb-2">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-4">
+            @if (customerInfo.avatar == "") {
+            <img style="border-radius: 3%;" src="../../assets/img/blank.png" alt="" width="100px" />
+            } @else {
+            <img style="border-radius: 3%;" src="data:image/png;base64,{{ customerInfo.avatar }}" alt="" width="100px" />
+            }
+          </div>
+          <div class="col-8">
+            <p class="font-lg">{{ customerInfo.name }} {{ customerInfo.lastName }}</p>
+            <p class="font-sm"><ion-icon name="mail-outline"></ion-icon> {{ customerInfo.email }}</p>
+            @if (customerInfo.phone == "") {
+              <p style="font-size: 12px;"><ion-icon name="call-outline"></ion-icon> {{ customerInfo.phone }}</p>
+            }
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Button Create  -->
-  <div class="ms-2 me-2 mt-2 mb-2 text-center">
-    <button class="btn btn-danger btn-lg w-100" style="background-color: #BA372F;" (click)="logout()">
-      {{'global.logout' | translate }}
-    </button>
+
+    <!-- Favorite Employee -->
+    <div class="card mt-2 mb-2">
+      <div class="card-body">
+
+      </div>
+    </div>
+
+    <!-- End Customer Info -->
+
+    <div class="row">
+      <div class="col-12 text-center">
+        <!-- Logout  -->
+        <button class="btn btn-danger btn-lg w-100" style="background-color: #BA372F;" (click)="logout()">
+          {{'global.logout' | translate }}
+        </button>
+      </div>
+    </div>
   </div>
 </ion-content>
 

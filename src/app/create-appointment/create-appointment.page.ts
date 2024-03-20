@@ -161,18 +161,14 @@ export class CreateAppointmentPage implements OnInit {
               if (this.employeePreferred == "") {
                 setTimeout(() => {
                   this.employeeSelected = this.employees[0].id;
-                  const btnEmpSelected = document.getElementById('emp-' + this.employees[0].id);
-                  btnEmpSelected.classList.add('bg-primary');
                   loader.dismiss();
-                  this.employeeAvailability();
+                  this.setEmployee(this.employees[0].id);
                 }, 100);
               } else {
                 setTimeout(() => {
                   this.employeeSelected = this.employeePreferred;
-                  const btnEmpSelected = document.getElementById('emp-' + this.employeePreferred);
-                  btnEmpSelected.classList.add('bg-primary');
                   loader.dismiss();
-                  this.employeeAvailability();
+                  this.setEmployee(this.employees[0].id);
                 }, 100);
               }
             }
@@ -285,8 +281,13 @@ export class CreateAppointmentPage implements OnInit {
               String(resApi.msg),
               String(this.introOk)
             );
-            this.employeeAvailability();
-            loader.dismiss();
+            this.setTime("", "");
+            this.employeeAvailability().then(() => {
+              setTimeout(() => {
+                this.setTime("", "");
+                loader.dismiss();
+              }, 100);
+            });
           }
         }, (error) => {
           this.mainService.showAlert(
@@ -344,14 +345,16 @@ export class CreateAppointmentPage implements OnInit {
 
   setEmployee(id) {
     this.employeeSelected = id;
-    const btnEmployees = document.getElementsByClassName('employees');
-    const count = btnEmployees.length;
+    const avatares = document.getElementsByClassName('avatar');
+    const count = avatares.length;
+
     for (let i = 0; i < count; i++) {
-      const element = btnEmployees[i];
-      element.classList.remove('bg-primary');
+      const element = avatares[i];
+      element.classList.remove('selected-emp');
     }
-    const elemet = document.getElementById('emp-' + id);
-    elemet.classList.add('bg-primary');
+
+    const elemet = document.getElementById('avatar-' + id);
+    elemet.classList.add('selected-emp');
     this.employeeAvailability();
   }
 
@@ -367,6 +370,13 @@ export class CreateAppointmentPage implements OnInit {
       const aux = index - 1;
       const elemet = document.getElementById('time-' + aux);
       elemet.classList.add('bg-primary');
+    } else {
+      const btnTimes = document.getElementsByClassName('times');
+      const count = btnTimes.length;
+      for (let i = 0; i < count; i++) {
+        const element = btnTimes[i];
+        element.classList.remove('bg-primary');
+      }
     }
   }
 }

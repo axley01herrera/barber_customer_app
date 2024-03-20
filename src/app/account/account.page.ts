@@ -35,9 +35,7 @@ export class AccountPage implements OnInit {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
     this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
-      if (companyInfo != null)
-        this.companyInfo = companyInfo;
-        console.log('companyInfo', this.companyInfo);
+      this.companyInfo = companyInfo;
     });
   }
 
@@ -61,8 +59,39 @@ export class AccountPage implements OnInit {
 
     this.mainService.getStorageCustomerInfo().then((customerInfo: any) => {
       this.customerInfo = customerInfo;
-      console.log(this.customerInfo)
+      this.getAccount();
     });
+  }
+
+  async getAccount() {
+    const networkStatus = await this.mainService.getNetworkStatus();
+    if (networkStatus) { // Check Network Status
+
+      const loader = await this.mainService.loader();
+      await loader.present();
+
+      const loginRequest = new URLSearchParams();
+      loginRequest.set('email', this.customerInfo.email);
+      loginRequest.set('password', this.customerInfo.password);
+      loginRequest.toString();
+
+      this.http.post(this.enviromentApiUrl + '/Api/login', loginRequest, this.httpOptions).subscribe((resApiLogin: any) => { // Api SignIn
+        if (resApiLogin.error == 0) {
+          this.customerInfo = resApiLogin.customerInfo;
+          this.storage.set('customerInfo', this.customerInfo).then(() => {
+            loader.dismiss();
+            console.log(this.customerInfo);
+          });
+        } else {
+          loader.dismiss();
+          this.logout();
+        }
+      }, (error) => { // Error Api SignIn
+        loader.dismiss();
+        this.logout();
+      }
+      );
+    }
   }
 
   async logout() {

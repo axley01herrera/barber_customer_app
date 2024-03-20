@@ -1,5 +1,6 @@
 {
   "global": {
+    "favorite_employee": "Favorite Employee",
     "select_shift": "Select a shift",
     "no_appointments_available": "There are no appointments available",
     "select_service_msg": "Select one or more services",

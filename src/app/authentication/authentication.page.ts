@@ -43,7 +43,7 @@ export class AuthenticationPage implements OnInit {
     private translate: TranslateService,
     private mainService: MainServiceService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
