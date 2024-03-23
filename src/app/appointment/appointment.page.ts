@@ -147,7 +147,6 @@ export class AppointmentPage implements OnInit {
   }
 
   async openSearch() {
-    console.log(this.date);
     const networkStatus = await this.mainService.getNetworkStatus();
     if (networkStatus) {
       const loader = await this.mainService.loader();

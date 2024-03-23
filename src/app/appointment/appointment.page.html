@@ -39,13 +39,13 @@
                   <br /><span class="font-md"><ion-icon name="time-outline"></ion-icon> {{ app.time}}</span>
                 </span>
                 <div *ngIf="app.status === 0">
-                  <span class="badge text-bg-warning font-lg">{{ 'status.waiting' | translate}}</span>
+                  <span class="badge text-bg-warning font-lg text-white">{{ 'status.waiting' | translate}}</span>
                 </div>
                 <div *ngIf="app.status === 1">
-                  <span class="badge text-bg-primary font-lg">{{ 'status.progress' | translate}}</span>
+                  <span class="badge text-bg-primary font-lg text-white">{{ 'status.progress' | translate}}</span>
                 </div>
                 <div *ngIf="app.status === 2">
-                  <span class="badge text-bg-success font-lg">{{ 'status.finish' | translate}}</span>
+                  <span class="badge text-bg-success font-lg text-white">{{ 'status.finish' | translate}}</span>
                 </div>
               </div>
               <!-- Services -->

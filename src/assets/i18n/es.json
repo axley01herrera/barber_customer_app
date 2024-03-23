@@ -18,6 +18,9 @@
     "not_network_msg": "No tienes conexion a internet",
     "btn_cancel": "Cancelar",
     "btn_confirm": "Confirmar",
+    "btn_change": "Cambiar",
+    "btn_close": "Cerrar",
+    "btn_select": "Seleccionar",
     "btn_create_appointment": "Crear Cita",
     "btn_sign_up":"Registrarme",
     "barber": "Barber, ",
@@ -37,7 +40,8 @@
     "invalid_url": "Rectifique su URL"
   },
   "dashboard": {
-    "app_deleted_msg": "Cita cancelada"
+    "app_deleted_msg": "Cita cancelada",
+    "no_upcoming_appointments": "No hay citas reservadas"
   },
   "tabPanel": {
     "home": "Inicio",
@@ -53,5 +57,8 @@
     "waiting": "En Espera",
     "progress": "En Curso",
     "finish": "Expirada"
+  },
+  "account": {
+    "sel_employee_preferred": "Seleccione su empleado favorito"
   }
 }

@@ -18,6 +18,9 @@
     "not_network_msg": "You are not connected to the internet",
     "btn_cancel": "Cancel",
     "btn_confirm": "Confirm",
+    "btn_change": "Change",
+    "btn_close": "Close",
+    "btn_select": "Select",
     "btn_create_appointment": "Create Appointment",
     "btn_sign_up": "Go to SignUp",
     "barber": "Barber, ",
@@ -37,7 +40,8 @@
     "invalid_url": "Please correct your URL"
   },
   "dashboard": {
-    "app_deleted_msg": "Canceled appointment"
+    "app_deleted_msg": "Canceled appointment",
+    "no_upcoming_appointments": "No booked appointments"
   },
   "tabPanel": {
     "home": "Home",
@@ -53,5 +57,8 @@
     "waiting": "Pending",
     "progress": "In Progress",
     "finish": "Finish"
+  },
+  "account": {
+    "sel_employee_preferred": "Select your employee preferred"
   }
 }
