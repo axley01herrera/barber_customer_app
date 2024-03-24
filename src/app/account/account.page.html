@@ -18,6 +18,19 @@
     <div class="card mt-2 mb-2">
       <div class="card-body">
         <div class="row">
+          <div class="col-6 mb-2">
+            <p>{{'account.txt_profile' | translate }}</p>
+          </div>
+          <div class="col-6 mb-2 text-end">
+            <button
+              class="btn btn-sm text-white"
+              style="background-color: #009abe"
+              expand="block"
+              (click)="editProfile()"
+            >
+              {{'global.btn_edit' | translate }}
+            </button>
+          </div>
           <div class="col-4">
             @if (customerInfo.avatar == "") {
             <img
@@ -61,7 +74,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-6 mb-2">
-            <p>Empleado favorito</p>
+            <p>{{'account.txt_emp_preferred' | translate }}</p>
           </div>
           <div class="col-6 mb-2 text-end">
             <button
@@ -70,7 +83,7 @@
               expand="block"
               (click)="setOpen(true)"
             >
-            {{'global.btn_change' | translate }}
+              {{'global.btn_change' | translate }}
             </button>
           </div>
           <div class="col-4">
@@ -103,9 +116,13 @@
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-title>{{'account.sel_employee_preferred' | translate }}</ion-title>
+            <ion-title
+              >{{'account.sel_employee_preferred' | translate }}</ion-title
+            >
             <ion-buttons slot="end">
-              <ion-button (click)="setOpen(false)">{{'global.btn_close' | translate }}</ion-button>
+              <ion-button (click)="setOpen(false)"
+                >{{'global.btn_close' | translate }}</ion-button
+              >
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
@@ -143,7 +160,7 @@
                   style="background-color: #009abe"
                   (click)="saveEmployeePreferred(employee.id)"
                 >
-                {{'global.btn_select' | translate }}
+                  {{'global.btn_select' | translate }}
                 </button>
               </div>
             </div>

@@ -17,6 +17,7 @@
     "btn_login": "Entrar",
     "not_network_msg": "No tienes conexion a internet",
     "btn_cancel": "Cancelar",
+    "btn_edit": "Editar",
     "btn_confirm": "Confirmar",
     "btn_change": "Cambiar",
     "btn_close": "Cerrar",
@@ -59,6 +60,8 @@
     "finish": "Expirada"
   },
   "account": {
-    "sel_employee_preferred": "Seleccione su empleado favorito"
+    "sel_employee_preferred": "Seleccione su empleado favorito",
+    "txt_profile":"Perfil",
+    "txt_emp_preferred":"Empleado Favorito"
   }
 }

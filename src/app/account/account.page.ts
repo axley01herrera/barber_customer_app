@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MainServiceService } from '../service/main-service.service';
 import { Router } from '@angular/router';
+import { AppLauncher } from '@capacitor/app-launcher';
 
 @Component({
   selector: 'app-account',
@@ -18,6 +19,8 @@ export class AccountPage implements OnInit {
   companyInfo: any = {};
   isModalOpen = false;
   employees: any = [];
+  profileURL: string = '';
+  urlCheck: boolean;
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -43,6 +46,7 @@ export class AccountPage implements OnInit {
   ngOnInit() {
     this.translate.addLangs(['en', 'es']);
     this.storage.create();
+
     this.mainService.getStorageCompanyInfo().then((companyInfo: any) => {
       this.companyInfo = companyInfo;
     });
@@ -72,6 +76,16 @@ export class AccountPage implements OnInit {
       this.customerInfo = customerInfo;
       this.getAccount();
     });
+  }
+
+  async checkCanOpenUrl(url: string) {
+    const { value } = await AppLauncher.canOpenUrl({
+      url: url,
+    });
+
+    this.urlCheck = value;
+
+    console.log('Can open url: ', value);
   }
 
   useText() {
@@ -224,10 +238,69 @@ export class AccountPage implements OnInit {
     }
   }
 
+  async editProfile() {
+    const networkStatus = await this.mainService.getNetworkStatus();
+    if (networkStatus) {
+      const loader = await this.mainService.loader();
+      await loader.present();
+      const request = new URLSearchParams();
+      request.set('customerID', this.customerInfo.id);
+      request.set('appToken', this.customerInfo.appToken);
+      request.toString();
+      this.http
+        .post(
+          this.enviromentApiUrl + '/Api/editProfile',
+          request,
+          this.httpOptions
+        )
+        .subscribe(
+          (resApi: any) => {
+            if (resApi.msg == 'invalid_app_token') {
+              this.logout();
+            }
+            if (resApi.error == 0) {
+              loader.dismiss();
+              this.profileURL = resApi.url;
+              this.checkCanOpenUrl(
+                this.enviromentApiUrl + '/Home/signInCustomer'
+              );
+              setTimeout(() => {
+                this.openURl(this.enviromentApiUrl + '/Home/signInCustomer');
+              }, 1000);
+            } else {
+              loader.dismiss();
+              this.mainService.showAlert(
+                String(this.introAtention),
+                String(this.error_msg),
+                String(this.introOk)
+              );
+            }
+          },
+          (error) => {
+            loader.dismiss();
+          }
+        );
+    }
+  }
+
   async logout() {
     this.storage.clear().then(() => {
       this.router.navigate(['intro']);
     });
+  }
+
+  async openURl(url: any) {
+    if (this.urlCheck === true) {
+      await AppLauncher.openUrl({
+        url: url,
+      });
+    } else {
+      this.mainService.showAlert(
+        String(this.introAtention),
+        String(this.error_msg),
+        String(this.introOk)
+      );
+    }
   }
 
   setOpen(isOpen: boolean) {
